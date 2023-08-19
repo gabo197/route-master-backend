@@ -1,10 +1,13 @@
-﻿namespace RouteMaster.API.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RouteMaster.API.Models
 {
     public class AuditLog
     {
+        [Key]
         public int UserId { get; set; }
         public DateTime? LastLogin { get; set; }
         public DateTime? LastLogout { get; set; }
-        public User User { get; set; } = null!;
+        public Passenger Passenger { get; set; } = null!;
     }
 }

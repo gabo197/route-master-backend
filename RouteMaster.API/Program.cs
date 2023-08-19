@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<RouteMasterContext>(
-        options => options.UseSqlServer(builder.Configuration["Movies:ServiceApiKey"]));
+        options => options.UseSqlServer(builder.Configuration["RouteMaster:ConnectionString"]));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

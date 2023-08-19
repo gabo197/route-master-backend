@@ -1,9 +1,11 @@
-﻿using System.Diagnostics.Metrics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
 
 namespace RouteMaster.API.Models
 {
     public class Address
     {
+        [Key]
         public int UserId { get; set; }
         public int CountryId { get; set; }
         public int DepartmentId { get; set; }
@@ -12,9 +14,8 @@ namespace RouteMaster.API.Models
         public string StreetLine1 { get; set; } = null!;
         public string? StreetLine2 { get; set; }
         public string? ZipCode { get; set; }
-        public Country Country { get; set; } = null!;
-        public Department Department { get; set; } = null!;
-        public Province Province { get; set; } = null!;
+        public bool IsActive { get; set; }
+        public Passenger Passenger { get; set; } = null!;
         public District District { get; set; } = null!;
     }
 }

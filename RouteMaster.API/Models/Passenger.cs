@@ -1,13 +1,11 @@
 ﻿namespace RouteMaster.API.Models
 {
-    public class Passenger : User
+    public class Passenger : Account
     {
         public int PaymentMethodId { get; set; }
-        public string FirstName { get; set; } = null!;
-        public string? MiddleName { get; set; }
-        public string LastName { get; set; } = null!;
-        public string? LastName2 { get; set; }
-        public string? PhoneNumber { get; set; }
+        public Address Address { get; set; } = null!;
+        public AuditLog AuditLog { get; set; } = null!;
+
         //public ICollection<Trip> Trips { get; set; }
         //public ICollection<Transaction> Transactions { get; set; }
     }
