@@ -2,8 +2,8 @@
 
 namespace RouteMaster.API.Domain.Services
 {
-    public interface IDistrictService
+    public interface ICountryService
     {
-        Task<IEnumerable<District>> ListAsync();
+        Task<IEnumerable<Country>> ListAsync();
     }
 }

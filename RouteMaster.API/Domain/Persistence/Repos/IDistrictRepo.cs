@@ -1,8 +1,8 @@
 ﻿using RouteMaster.API.Domain.Models;
 
-namespace RouteMaster.API.Domain.Services
+namespace RouteMaster.API.Domain.Persistence.Repos
 {
-    public interface IDistrictService
+    public interface IDistrictRepo
     {
         Task<IEnumerable<District>> ListAsync();
     }

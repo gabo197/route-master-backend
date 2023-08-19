@@ -2,8 +2,8 @@
 
 namespace RouteMaster.API.Domain.Services
 {
-    public interface IDistrictService
+    public interface IDepartmentService
     {
-        Task<IEnumerable<District>> ListAsync();
+        Task<IEnumerable<Department>> ListAsync();
     }
 }
