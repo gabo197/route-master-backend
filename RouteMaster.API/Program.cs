@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using RouteMaster.API.Data;
+using RouteMaster.API.Domain.Persistence.Contexts;
 
 var builder = WebApplication.CreateBuilder(args);
 

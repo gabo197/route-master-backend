@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using RouteMaster.API.Models;
+using RouteMaster.API.Domain.Models;
 
-namespace RouteMaster.API.Data
+namespace RouteMaster.API.Domain.Persistence.Contexts
 {
     public class RouteMasterContext : DbContext
     {
@@ -66,7 +66,7 @@ namespace RouteMaster.API.Data
             modelBuilder.Entity<Address>()
                 .HasOne(a => a.District)
                 .WithMany(d => d.Addresses)
-                .HasForeignKey(a => new { a.CountryId, a.DepartmentId, a.ProvinceId, a.DistrictId});
+                .HasForeignKey(a => new { a.CountryId, a.DepartmentId, a.ProvinceId, a.DistrictId });
 
             //Country
 

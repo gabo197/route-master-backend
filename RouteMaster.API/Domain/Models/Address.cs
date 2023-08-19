@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.Metrics;
 
-namespace RouteMaster.API.Models
+namespace RouteMaster.API.Domain.Models
 {
     public class Address
     {

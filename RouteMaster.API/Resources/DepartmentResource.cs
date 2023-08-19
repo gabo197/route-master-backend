@@ -1,12 +1,13 @@
-﻿namespace RouteMaster.API.Models
+﻿using RouteMaster.API.Domain.Models;
+
+namespace RouteMaster.API.Resources
 {
-    public class Department
+    public class DepartmentResource
     {
         public int CountryId { get; set; }
         public int DepartmentId { get; set; }
         public string Name { get; set; } = null!;
         public bool IsActive { get; set; }
-        public Country Country { get; set; } = null!;
-        public ICollection<Province> Provinces { get; set; } = null!;
+        public CountryResource Country { get; set; } = null!;
     }
 }

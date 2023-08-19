@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RouteMaster.API.Models
+namespace RouteMaster.API.Domain.Models
 {
     public class AuditLog
     {
