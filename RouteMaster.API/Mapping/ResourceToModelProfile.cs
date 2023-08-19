@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using RouteMaster.API.Domain.Models;
+using RouteMaster.API.Resources;
 
 namespace RouteMaster.API.Mapping
 {
@@ -6,7 +8,7 @@ namespace RouteMaster.API.Mapping
     {
         public ResourceToModelProfile()
         {
-
+            CreateMap<SaveUserResource, User>();
         }
     }
 }

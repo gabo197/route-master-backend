@@ -23,6 +23,14 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //User
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasAlternateKey(u => u.Email);
+
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Account)
                 .WithOne(a => a.User)

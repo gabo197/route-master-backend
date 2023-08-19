@@ -19,17 +19,19 @@ builder.Services.AddDbContext<RouteMasterContext>(
 // Dependency Injection Configuration
 
 // Repos
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICountryRepo, CountryRepo>();
 builder.Services.AddScoped<IDepartmentRepo, DepartmentRepo>();
 builder.Services.AddScoped<IProvinceRepo, ProvinceRepo>();
 builder.Services.AddScoped<IDistrictRepo, DistrictRepo>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 // Services
 builder.Services.AddScoped<ICountryService, CountryService>();
 builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IProvinceService, ProvinceService>();
 builder.Services.AddScoped<IDistrictService, DistrictService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Apply Endpoints Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
