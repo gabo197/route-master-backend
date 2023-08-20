@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityFramework.Exceptions.SqlServer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using RouteMaster.API.Domain.Models;
 
@@ -19,6 +20,11 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<Department> Departments { get; set; } = null!;
         public DbSet<District> Districts { get; set; } = null!;
         public DbSet<Province> Provinces { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseExceptionProcessor();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
