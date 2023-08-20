@@ -5,7 +5,7 @@ namespace RouteMaster.API.Domain.Services
 {
     public interface IUserService
     {
-        //Task<AuthenticationResponse> Authenticate(AuthenticationRequest request);
+        Task<AuthenticationResponse?> Authenticate(AuthenticationRequest request);
         Task<IEnumerable<User>> ListAsync();
         Task<UserResponse> GetByIdAsync(int id);
         Task<UserResponse> SaveAsync(User user);

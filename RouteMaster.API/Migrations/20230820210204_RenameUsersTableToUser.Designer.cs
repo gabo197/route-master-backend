@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RouteMaster.API.Domain.Persistence.Contexts;
 
@@ -11,9 +12,10 @@ using RouteMaster.API.Domain.Persistence.Contexts;
 namespace RouteMaster.API.Migrations
 {
     [DbContext(typeof(RouteMasterContext))]
-    partial class RouteMasterContextModelSnapshot : ModelSnapshot
+    [Migration("20230820210204_RenameUsersTableToUser")]
+    partial class RenameUsersTableToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -700,9 +702,6 @@ namespace RouteMaster.API.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")

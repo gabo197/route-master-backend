@@ -30,6 +30,8 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         {
             //User
 
+            modelBuilder.Entity<User>().ToTable("User");
+
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();

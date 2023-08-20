@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RouteMaster.API.Domain.Models;
 using RouteMaster.API.Domain.Services;
+using RouteMaster.API.Domain.Services.Communications;
 using RouteMaster.API.Extensions;
 using RouteMaster.API.Resources;
 
@@ -20,6 +21,18 @@ namespace RouteMaster.API.Controllers
         {
             this.userService = userService;
             this.mapper = mapper;
+        }
+
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticationRequest request)
+        {
+            var response = await userService.Authenticate(request);
+
+            if (response == null)
+                return BadRequest(new { message = "Invalid Username or Password" });
+
+            return Ok(response);
         }
 
         [HttpGet]
