@@ -13,6 +13,9 @@ namespace RouteMaster.API.Mapping
             CreateMap<Province, ProvinceResource>();
             CreateMap<District, DistrictResource>();
             CreateMap<User, UserResource>();
+            CreateMap<Passenger, PassengerResource>();
+            CreateMap<Address, AddressResource>();
+            CreateMap<AuditLog, AuditLogResource>();
         }
     }
 }

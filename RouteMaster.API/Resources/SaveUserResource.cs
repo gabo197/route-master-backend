@@ -14,5 +14,7 @@ namespace RouteMaster.API.Resources
         [Required]
         [MaxLength(30)]
         public string Password { get; set; } = null!;
+        [Required]
+        public bool IsActive { get; set; }
     }
 }

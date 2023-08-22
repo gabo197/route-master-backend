@@ -24,7 +24,7 @@ builder.Services.Configure<AppSettings>(appSettingsSection);
 
 // JSON Web Token Authentication Configuration
 var appSettings = appSettingsSection.Get<AppSettings>();
-var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+var key = Encoding.ASCII.GetBytes(appSettings!.Secret);
 
 // Authentication Service Configuration
 builder.Services.AddAuthentication(x =>
@@ -58,6 +58,7 @@ builder.Services.AddScoped<IDepartmentRepo, DepartmentRepo>();
 builder.Services.AddScoped<IProvinceRepo, ProvinceRepo>();
 builder.Services.AddScoped<IDistrictRepo, DistrictRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IPassengerRepo, PassengerRepo>();
 
 // Services
 builder.Services.AddScoped<ICountryService, CountryService>();
@@ -65,6 +66,7 @@ builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 builder.Services.AddScoped<IProvinceService, ProvinceService>();
 builder.Services.AddScoped<IDistrictService, DistrictService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IPassengerService, PassengerService>();
 
 // Apply Endpoints Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);

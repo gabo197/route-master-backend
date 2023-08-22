@@ -8,6 +8,6 @@ namespace RouteMaster.API.Resources
         public string Email { get; set; } = null!;
         public string Username { get; set; } = null!;
         public string Password { get; set; } = null!;
-        //public Account Account { get; set; } = null!;
+        public bool IsActive { get; set; }
     }
 }

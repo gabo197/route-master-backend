@@ -58,6 +58,7 @@ namespace RouteMaster.API.Controllers
             return Ok(userResource);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(typeof(UserResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]

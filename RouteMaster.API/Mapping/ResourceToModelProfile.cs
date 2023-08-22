@@ -9,6 +9,7 @@ namespace RouteMaster.API.Mapping
         public ResourceToModelProfile()
         {
             CreateMap<SaveUserResource, User>();
+            CreateMap<SavePassengerResource, Passenger>();
         }
     }
 }

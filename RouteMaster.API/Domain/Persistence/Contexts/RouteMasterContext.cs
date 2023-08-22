@@ -1,6 +1,5 @@
 ﻿using EntityFramework.Exceptions.SqlServer;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using RouteMaster.API.Domain.Models;
 
 namespace RouteMaster.API.Domain.Persistence.Contexts

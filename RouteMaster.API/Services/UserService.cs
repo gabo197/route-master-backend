@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using RouteMaster.API.Domain.Models;
 using RouteMaster.API.Domain.Persistence.Repos;
@@ -15,7 +14,7 @@ namespace RouteMaster.API.Services
 {
     public class UserService : IUserService
     {
-        private AppSettings appSettings;
+        private readonly AppSettings appSettings;
         private readonly IUserRepo userRepo;
         private readonly IUnitOfWork unitOfWork;
 
@@ -118,6 +117,7 @@ namespace RouteMaster.API.Services
                 return new UserResponse("User not found");
 
             existingUser.Email = user.Email;
+            existingUser.Username = user.Username;
             existingUser.Password = user.Password;
 
             try
