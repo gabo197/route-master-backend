@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RouteMaster.API.Domain.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using RouteMaster.API.Domain.Persistence.Contexts;
 namespace RouteMaster.API.Migrations
 {
     [DbContext(typeof(RouteMasterContext))]
-    partial class RouteMasterContextModelSnapshot : ModelSnapshot
+    [Migration("20230823004615_AddAccountTypeTable")]
+    partial class AddAccountTypeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -678,40 +681,6 @@ namespace RouteMaster.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.PaymentMethod", b =>
-                {
-                    b.Property<int>("PaymentMethodId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PaymentMethodId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PaymentMethodId");
-
-                    b.ToTable("PaymentMethod", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            PaymentMethodId = 1,
-                            Name = "Tarjeta de crédito"
-                        },
-                        new
-                        {
-                            PaymentMethodId = 2,
-                            Name = "Tarjeta de débito"
-                        },
-                        new
-                        {
-                            PaymentMethodId = 3,
-                            Name = "Yape / Plin"
-                        });
-                });
-
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Province", b =>
                 {
                     b.Property<int>("CountryId")
@@ -805,8 +774,6 @@ namespace RouteMaster.API.Migrations
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
-                    b.HasIndex("PaymentMethodId");
-
                     b.ToTable("Account", (string)null);
 
                     b.HasDiscriminator().HasValue(2);
@@ -894,17 +861,6 @@ namespace RouteMaster.API.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.Passenger", b =>
-                {
-                    b.HasOne("RouteMaster.API.Domain.Models.PaymentMethod", "PaymentMethod")
-                        .WithMany("Passengers")
-                        .HasForeignKey("PaymentMethodId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentMethod");
-                });
-
             modelBuilder.Entity("RouteMaster.API.Domain.Models.AccountType", b =>
                 {
                     b.Navigation("Accounts");
@@ -923,11 +879,6 @@ namespace RouteMaster.API.Migrations
             modelBuilder.Entity("RouteMaster.API.Domain.Models.District", b =>
                 {
                     b.Navigation("Addresses");
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.PaymentMethod", b =>
-                {
-                    b.Navigation("Passengers");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Province", b =>

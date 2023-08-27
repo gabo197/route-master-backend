@@ -16,6 +16,8 @@ namespace RouteMaster.API.Mapping
             CreateMap<Passenger, PassengerResource>();
             CreateMap<Address, AddressResource>();
             CreateMap<AuditLog, AuditLogResource>();
+            CreateMap<AccountType, AccountTypeResource>();
+            CreateMap<PaymentMethod, PaymentMethodResource>();
         }
     }
 }

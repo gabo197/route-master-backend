@@ -11,6 +11,8 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         }
 
         public DbSet<User> Users { get; set; } = null!;
+        public DbSet<AccountType> AccountTypes { get; set; } = null!;
+        public DbSet<PaymentMethod> PaymentMethods { get; set; } = null!;
         public DbSet<Passenger> Passengers { get; set; } = null!;
         public DbSet<Administrator> Administrators { get; set; } = null!;
         public DbSet<AuditLog> AuditLogs { get; set; } = null!;
@@ -27,6 +29,44 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //AccountTypes
+
+            modelBuilder.Entity<AccountType>().ToTable("AccountType");
+
+            modelBuilder.Entity<AccountType>().HasData(
+                new AccountType
+                {
+                    AccountTypeId = 1,
+                    Name = "Administrator"
+                },
+                new AccountType
+                {
+                    AccountTypeId = 2,
+                    Name = "Passenger"
+                });
+
+            //Payment Methods
+
+            modelBuilder.Entity<PaymentMethod>().ToTable("PaymentMethod");
+
+            modelBuilder.Entity<PaymentMethod>().HasData(
+                new PaymentMethod
+                {
+                    PaymentMethodId = 1,
+                    Name = "Tarjeta de crédito"
+                },
+                new PaymentMethod
+                {
+                    PaymentMethodId = 2,
+                    Name = "Tarjeta de débito"
+                },
+                new PaymentMethod
+                {
+                    PaymentMethodId = 3,
+                    Name = "Yape / Plin"
+                }
+                );
+
             //User
 
             modelBuilder.Entity<User>().ToTable("User");
@@ -46,9 +86,14 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
             //Account
 
             modelBuilder.Entity<Account>()
-                .HasDiscriminator(u => u.AccountType)
-                .HasValue<Administrator>(AccountTypes.Administrator)
-                .HasValue<Passenger>(AccountTypes.Passenger);
+                .HasOne(a => a.AccountType)
+                .WithMany(a => a.Accounts)
+                .HasForeignKey(a => a.AccountTypeId);
+
+            modelBuilder.Entity<Account>()
+                .HasDiscriminator(u => u.AccountTypeId)
+                .HasValue<Administrator>(1)
+                .HasValue<Passenger>(2);
 
             //Pasenger
 
@@ -63,6 +108,11 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .HasOne(p => p.AuditLog)
                 .WithOne(p => p.Passenger)
                 .HasForeignKey<AuditLog>();
+
+            modelBuilder.Entity<Passenger>()
+                .HasOne(p => p.PaymentMethod)
+                .WithMany(p => p.Passengers)
+                .HasForeignKey(p => p.PaymentMethodId);
 
             //Administrator
 

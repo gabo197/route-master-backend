@@ -18,12 +18,20 @@ namespace RouteMaster.API.Persistence.Repos
 
         public async Task<Passenger?> FindById(int id)
         {
-            return await _context.Passengers.FindAsync(id);
+            return await _context.Passengers
+                .Include(p => p.PaymentMethod)
+                .Include(p => p.Address)
+                .Include(p => p.AuditLog)
+                .FirstOrDefaultAsync(p => p.PaymentMethodId == id);
         }
 
         public async Task<IEnumerable<Passenger>> ListAsync()
         {
-            return await _context.Passengers.ToListAsync();
+            return await _context.Passengers
+                .Include(p => p.PaymentMethod)
+                .Include(p => p.Address)
+                .Include(p => p.AuditLog)
+                .ToListAsync();
         }
 
         public void Remove(Passenger passenger)

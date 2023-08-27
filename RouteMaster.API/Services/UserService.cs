@@ -35,7 +35,7 @@ namespace RouteMaster.API.Services
                 {
                     new Claim(ClaimTypes.Name, user.UserId.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddDays(14),
+                Expires = DateTime.UtcNow.AddDays(90),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)

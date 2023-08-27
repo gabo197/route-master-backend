@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/RouteMasterAPI20230826173352/providers/Microsoft.ServiceLinker/linkers/RouteMasterConnectionString_DCF0C430EF",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/routemasterapidbserver/databases/RouteMaster.API_db",
+      "type": "mssql.azure",
+      "connectionId": "RouteMaster:ConnectionString",
+      "dynamicId": null
+    }
+  }
+}

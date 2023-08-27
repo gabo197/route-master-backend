@@ -46,8 +46,20 @@ builder.Services.AddAuthentication(x =>
     });
 
 // Database Connection Configuration
-builder.Services.AddDbContext<RouteMasterContext>(
-        options => options.UseSqlServer(builder.Configuration["RouteMaster:ConnectionString"]));
+var connection = String.Empty;
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
+    connection = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
+}
+else
+{
+    connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
+}
+builder.Services.AddDbContext<RouteMasterContext>(options =>
+    options.UseSqlServer(connection));
+//builder.Services.AddDbContext<RouteMasterContext>(
+//        options => options.UseSqlServer(builder.Configuration["RouteMaster:ConnectionString"]));
 
 // Dependency Injection Configuration
 
@@ -111,9 +123,10 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseSwagger();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
     app.UseSwaggerUI();
 }
 

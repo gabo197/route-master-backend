@@ -6,7 +6,7 @@ namespace RouteMaster.API.Resources
     public abstract class SaveAccountResource
     {
         [Required]
-        public AccountTypes AccountType { get; set; }
+        public int UserId { get; set; }
         [Required]
         public string FirstName { get; set; } = null!;
         public string? MiddleName { get; set; }
