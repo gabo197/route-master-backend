@@ -22,7 +22,7 @@ namespace RouteMaster.API.Persistence.Repos
                 .Include(p => p.PaymentMethod)
                 .Include(p => p.Address)
                 .Include(p => p.AuditLog)
-                .FirstOrDefaultAsync(p => p.PaymentMethodId == id);
+                .FirstOrDefaultAsync(p => p.UserId == id);
         }
 
         public async Task<IEnumerable<Passenger>> ListAsync()
