@@ -87,6 +87,14 @@ namespace RouteMaster.API.Services
                 return new UserResponse("User not found");
             return new UserResponse(existingUser);
         }
+        public async Task<UserResponse> GetByEmailAsync(string email)
+        {
+            var existingUser = await userRepo.FindByEmail(email);
+
+            if (existingUser == null)
+                return new UserResponse("User not found");
+            return new UserResponse(existingUser);
+        }
 
         public async Task<IEnumerable<User>> ListAsync()
         {

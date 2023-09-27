@@ -21,6 +21,11 @@ namespace RouteMaster.API.Persistence.Repos
             return await _context.Users.FindAsync(id);
         }
 
+        public async Task<User?> FindByEmail(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
+
         public async Task<IEnumerable<User>> ListAsync()
         {
             return await _context.Users.ToListAsync();
