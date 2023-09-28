@@ -93,6 +93,10 @@ namespace RouteMaster.API.Services
 
             if (existingUser == null)
                 return new UserResponse("User not found");
+                
+            var resetCode = RandomCodeGenerator.GenerateRandomCode(6);
+            existingUser.Token = resetCode;
+            await EmailService.SendResetPasswordEmailAsync(existingUser.Email, resetCode);
             return new UserResponse(existingUser);
         }
 
@@ -126,7 +130,7 @@ namespace RouteMaster.API.Services
 
             existingUser.Email = user.Email;
             existingUser.Username = user.Username;
-            existingUser.Password = user.Password;
+            existingUser.Password = PasswordHasher.Hash(user.Password);
 
             try
             {

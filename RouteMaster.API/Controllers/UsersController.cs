@@ -58,12 +58,12 @@ namespace RouteMaster.API.Controllers
             return Ok(userResource);
         }
 
-        [HttpGet("email/{email}")]
+        [HttpPost("get-by-email")]
         [ProducesResponseType(typeof(UserResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]
-        public async Task<IActionResult> GetAsync(string email)
+        public async Task<IActionResult> GetAsync([FromBody] EmailRequest emailRequest)
         {
-            var result = await userService.GetByEmailAsync(email);
+            var result = await userService.GetByEmailAsync(emailRequest.Email);
             if (!result.Success)
                 return BadRequest(result.Message);
             var userResource = mapper.Map<User, UserResource>(result.Resource);
