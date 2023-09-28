@@ -19,7 +19,7 @@ public class EmailService
                   + $"{resetCode}\n\n"
                   + "Si no ha solicitado este cambio de contraseña, puede ignorar este mensaje de correo electrónico. Su contraseña actual seguirá siendo válida.\n\n"
                   + "Por favor, recuerde mantener sus credenciales de inicio de sesión seguras y no comparta su contraseña con nadie.\n\n"
-                  + "Si necesita ayuda o tiene alguna pregunta, no dude en ponerse en contacto con nuestro equipo de soporte en [Correo Electrónico de Soporte].\n\n"
+                  + "Si necesita ayuda o tiene alguna pregunta, no dude en ponerse en contacto con nuestro equipo de soporte.\n\n"
                   + "Atentamente,\n\n"
                   + "Equipo de soporte técnico de RouteMaster\n";
 
