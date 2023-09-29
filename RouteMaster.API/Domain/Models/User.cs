@@ -9,5 +9,6 @@
         public string? Token { get; set; }
         public bool IsActive { get; set; }
         public Account Account { get; set; } = null!;
+        public Wallet Wallet { get; set; } = null!;
     }
 }

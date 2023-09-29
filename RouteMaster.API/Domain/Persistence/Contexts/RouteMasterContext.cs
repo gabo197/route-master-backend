@@ -21,6 +21,10 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<Department> Departments { get; set; } = null!;
         public DbSet<District> Districts { get; set; } = null!;
         public DbSet<Province> Provinces { get; set; } = null!;
+        public DbSet<Wallet> Wallets { get; set; } = null!;
+        public DbSet<TransferTransaction> TransferTransactions { get; set; } = null!;
+        public DbSet<PaymentTransaction> PaymentTransactions { get; set; } = null!;
+        public DbSet<RechargeTransaction> RechargeTransactions { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -29,6 +33,93 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            //Wallet
+
+            modelBuilder.Entity<Wallet>().ToTable("Wallet");
+
+            modelBuilder.Entity<Wallet>().Property(w => w.Balance).HasColumnType("decimal(3,2)");
+
+            modelBuilder.Entity<Wallet>()
+                .HasOne(w => w.User)
+                .WithOne(u => u.Wallet)
+                .HasForeignKey<Wallet>(w => w.UserId);
+
+            // modelBuilder.Entity<Wallet>()
+            //     .HasMany(w => w.Transactions)
+            //     .WithOne(t => t.Wallet)
+            //     .HasForeignKey(t => t.WalletId);
+
+            //TransactionType
+
+            modelBuilder.Entity<TransactionType>().ToTable("TransactionType");
+
+            modelBuilder.Entity<TransactionType>().HasData(
+                new TransactionType
+                {
+                    TransactionTypeId = 1,
+                    Name = "Payment"
+                },
+                new TransactionType
+                {
+                    TransactionTypeId = 2,
+                    Name = "Recharge"
+                },
+                new TransactionType
+                {
+                    TransactionTypeId = 3,
+                    Name = "Transfer"
+                });
+
+            //Transaction
+
+            modelBuilder.Entity<Transaction>().Property(t => t.Amount).HasColumnType("decimal(3,2)");
+
+            modelBuilder.Entity<Transaction>()
+                .HasOne(t => t.TransactionType)
+                .WithMany(tt => tt.Transactions)
+                .HasForeignKey(t => t.TransactionTypeId);
+
+            modelBuilder.Entity<Transaction>()
+                .HasDiscriminator(t => t.TransactionTypeId)
+                .HasValue<PaymentTransaction>(1)
+                .HasValue<RechargeTransaction>(2)
+                .HasValue<TransferTransaction>(3);
+
+            //PaymentTransaction
+
+            modelBuilder.Entity<PaymentTransaction>().ToTable("Transaction");
+
+            modelBuilder.Entity<PaymentTransaction>()
+                .HasOne(t => t.Wallet)
+                .WithMany(w => w.PaymentTransactions)
+                .HasForeignKey(t => t.WalletId);
+
+            //RechargeTransaction
+
+            modelBuilder.Entity<RechargeTransaction>().ToTable("Transaction");
+
+            modelBuilder.Entity<RechargeTransaction>()
+                .HasOne(t => t.Wallet)
+                .WithMany(w => w.RechargeTransactions)
+                .HasForeignKey(t => t.WalletId);
+
+            //TransferTransaction
+
+            modelBuilder.Entity<TransferTransaction>().ToTable("Transaction");
+
+            modelBuilder.Entity<TransferTransaction>()
+                .HasOne(t => t.RecipientWallet)
+                .WithMany(w => w.RecievedTransferTransactions)
+                .HasForeignKey(t => t.RecipientWalletId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<TransferTransaction>()
+                .HasOne(t => t.Wallet)
+                .WithMany(w => w.SentTransferTransactions)
+                .HasForeignKey(t => t.WalletId);
+
             //AccountTypes
 
             modelBuilder.Entity<AccountType>().ToTable("AccountType");
