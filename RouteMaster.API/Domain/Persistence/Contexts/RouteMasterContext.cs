@@ -22,6 +22,9 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<District> Districts { get; set; } = null!;
         public DbSet<Province> Provinces { get; set; } = null!;
         public DbSet<Wallet> Wallets { get; set; } = null!;
+        public DbSet<Account> Accounts { get; set; } = null!;
+        public DbSet<TransactionType> TransactionTypes { get; set; } = null!;
+        public DbSet<Transaction> Transactions { get; set; } = null!;
         public DbSet<TransferTransaction> TransferTransactions { get; set; } = null!;
         public DbSet<PaymentTransaction> PaymentTransactions { get; set; } = null!;
         public DbSet<RechargeTransaction> RechargeTransactions { get; set; } = null!;
@@ -73,6 +76,8 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 });
 
             //Transaction
+
+            modelBuilder.Entity<Transaction>().ToTable("Transaction");
 
             modelBuilder.Entity<Transaction>().Property(t => t.Amount).HasColumnType("decimal(3,2)");
 
@@ -175,6 +180,8 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .HasForeignKey<Account>(a => a.UserId);
 
             //Account
+
+            modelBuilder.Entity<Account>().ToTable("Account");
 
             modelBuilder.Entity<Account>()
                 .HasOne(a => a.AccountType)
