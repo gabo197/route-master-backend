@@ -4,7 +4,7 @@ public class Wallet
 {
     public int WalletId { get; set; }
     public int UserId { get; set; }
-    public User User { get; set; } = null!;
+    public Passenger Passenger { get; set; } = null!;
     public decimal Balance { get; set; }
     public DateTime LastUpdate { get; set; }
     //public ICollection<Transaction> Transactions { get; set; } = null!;

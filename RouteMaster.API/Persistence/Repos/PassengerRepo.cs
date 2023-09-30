@@ -23,6 +23,7 @@ namespace RouteMaster.API.Persistence.Repos
                 .Include(p => p.Address)
                 .Include(p => p.AuditLog)
                 .Include(p => p.User)
+                .Include(p => p.Wallet)
                 .FirstOrDefaultAsync(p => p.UserId == id);
         }
 
@@ -33,6 +34,7 @@ namespace RouteMaster.API.Persistence.Repos
                 .Include(p => p.Address)
                 .Include(p => p.AuditLog)
                 .Include(p => p.User)
+                .Include(p => p.Wallet)
                 .ToListAsync();
         }
 

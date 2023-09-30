@@ -42,10 +42,11 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<Wallet>().ToTable("Wallet");
 
-            modelBuilder.Entity<Wallet>().Property(w => w.Balance).HasColumnType("decimal(3,2)");
+            modelBuilder.Entity<Wallet>().Property(w => w.Balance).HasColumnType("decimal(5,2)");
+            modelBuilder.Entity<Wallet>().ToTable(t=>t.HasCheckConstraint("CK_Wallet_Balance", "Balance <= 500.00"));
 
             modelBuilder.Entity<Wallet>()
-                .HasOne(w => w.User)
+                .HasOne(w => w.Passenger)
                 .WithOne(u => u.Wallet)
                 .HasForeignKey<Wallet>(w => w.UserId);
 
@@ -79,7 +80,10 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<Transaction>().ToTable("Transaction");
 
-            modelBuilder.Entity<Transaction>().Property(t => t.Amount).HasColumnType("decimal(3,2)");
+            modelBuilder.Entity<Transaction>().Property(t => t.Amount)
+                .HasColumnType("decimal(5,2)");
+
+            modelBuilder.Entity<Transaction>().ToTable(t => t.HasCheckConstraint("CK_Transaction_Amount", "Amount > 0.00"));
 
             modelBuilder.Entity<Transaction>()
                 .HasOne(t => t.TransactionType)

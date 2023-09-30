@@ -8,5 +8,6 @@ namespace RouteMaster.API.Resources
         public PaymentMethodResource PaymentMethod { get; set; } = null!;
         public AddressResource Address { get; set; } = null!;
         public AuditLogResource AuditLog { get; set; } = null!;
+        public WalletResource Wallet { get; set; } = null!;
     }
 }

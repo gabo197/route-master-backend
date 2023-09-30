@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RouteMaster.API.Domain.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using RouteMaster.API.Domain.Persistence.Contexts;
 namespace RouteMaster.API.Migrations
 {
     [DbContext(typeof(RouteMasterContext))]
-    partial class RouteMasterContextModelSnapshot : ModelSnapshot
+    [Migration("20230929035549_FixWalletBalance")]
+    partial class FixWalletBalance
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -889,7 +892,7 @@ namespace RouteMaster.API.Migrations
 
                     b.ToTable("Wallet", null, t =>
                         {
-                            t.HasCheckConstraint("CK_Wallet_Balance", "Balance <= 500.00");
+                            t.HasCheckConstraint("CK_Wallet_Balance", "Balance < 500.00");
                         });
                 });
 

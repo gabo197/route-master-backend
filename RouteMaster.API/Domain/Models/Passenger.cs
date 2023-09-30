@@ -6,6 +6,7 @@
         public Address Address { get; set; } = null!;
         public AuditLog AuditLog { get; set; } = null!;
         public PaymentMethod PaymentMethod { get; set; } = null!;
+        public Wallet Wallet { get; set; } = null!;
 
         //public ICollection<Trip> Trips { get; set; }
         //public ICollection<Transaction> Transactions { get; set; }
