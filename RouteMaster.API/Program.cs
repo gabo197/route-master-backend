@@ -71,6 +71,7 @@ builder.Services.AddScoped<IProvinceRepo, ProvinceRepo>();
 builder.Services.AddScoped<IDistrictRepo, DistrictRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IPassengerRepo, PassengerRepo>();
+builder.Services.AddScoped<IWalletRepo, WalletRepo>();
 
 // Services
 builder.Services.AddScoped<ICountryService, CountryService>();
@@ -79,6 +80,7 @@ builder.Services.AddScoped<IProvinceService, ProvinceService>();
 builder.Services.AddScoped<IDistrictService, DistrictService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPassengerService, PassengerService>();
+builder.Services.AddScoped<IWalletService, WalletService>();
 
 // Apply Endpoints Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);

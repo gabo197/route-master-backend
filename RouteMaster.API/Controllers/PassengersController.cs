@@ -8,6 +8,7 @@ using RouteMaster.API.Resources;
 
 namespace RouteMaster.API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PassengersController : ControllerBase
