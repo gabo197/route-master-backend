@@ -28,6 +28,7 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<TransferTransaction> TransferTransactions { get; set; } = null!;
         public DbSet<PaymentTransaction> PaymentTransactions { get; set; } = null!;
         public DbSet<RechargeTransaction> RechargeTransactions { get; set; } = null!;
+        public DbSet<Ticket> Tickets { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,6 +38,24 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Ticket
+
+            modelBuilder.Entity<Ticket>().ToTable("Ticket");
+            modelBuilder.Entity<Ticket>().HasKey(t => t.TicketId);
+            modelBuilder.Entity<Ticket>().Property(t => t.TicketId).IsRequired();
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Transaction)
+                .WithOne()
+                .HasForeignKey<Ticket>(t => t.TransactionId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Ticket>()
+                .HasOne(t => t.Passenger)
+                .WithMany(u => u.Tickets)
+                .HasForeignKey(t => t.UserId)
+                .IsRequired();
 
             //Wallet
 

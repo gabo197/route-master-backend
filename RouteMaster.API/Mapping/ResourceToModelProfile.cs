@@ -11,6 +11,7 @@ namespace RouteMaster.API.Mapping
             CreateMap<SaveUserResource, User>();
             CreateMap<SavePassengerResource, Passenger>();
             CreateMap<SaveWalletResource, Wallet>();
+            CreateMap<SaveTicketResource, Ticket>();
         }
     }
 }
