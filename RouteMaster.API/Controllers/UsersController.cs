@@ -61,13 +61,25 @@ namespace RouteMaster.API.Controllers
         [HttpPost("get-by-email")]
         [ProducesResponseType(typeof(UserResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]
-        public async Task<IActionResult> GetAsync([FromBody] EmailRequest emailRequest)
+        public async Task<IActionResult> GetByEmailAsync([FromBody] EmailRequest emailRequest)
         {
             var result = await userService.GetByEmailAsync(emailRequest.Email);
             if (!result.Success)
                 return BadRequest(result.Message);
             var userResource = mapper.Map<User, UserResource>(result.Resource);
             return Ok(userResource);
+        }
+
+        [HttpPost("send-reset-password-email")]
+        [ProducesResponseType(typeof(UserResource), 200)]
+        [ProducesResponseType(typeof(BadRequestResult), 404)]
+        public async Task<IActionResult> SendResetPasswordEmailAsync([FromBody] EmailRequest emailRequest)
+        {
+            var result = await userService.SendResetPasswordEmailAsync(emailRequest.Email);
+            if (!result.Success)
+                return BadRequest(result.Message);
+            var userResourceResponse = mapper.Map<User, UserResource>(result.Resource);
+            return Ok(userResourceResponse);
         }
 
         [AllowAnonymous]

@@ -9,6 +9,7 @@ namespace RouteMaster.API.Domain.Services
         Task<IEnumerable<User>> ListAsync();
         Task<UserResponse> GetByIdAsync(int id);
         Task<UserResponse> GetByEmailAsync(string email);
+        Task<UserResponse> SendResetPasswordEmailAsync(string email);
         Task<UserResponse> SaveAsync(User user);
         Task<UserResponse> UpdateAsync(int id, User user);
         Task<UserResponse> DeleteAsync(int id);

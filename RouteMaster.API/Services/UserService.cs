@@ -94,10 +94,23 @@ namespace RouteMaster.API.Services
             if (existingUser == null)
                 return new UserResponse("User not found");
                 
-            var resetCode = RandomCodeGenerator.GenerateRandomCode(6);
-            existingUser.Token = resetCode;
-            await EmailService.SendResetPasswordEmailAsync(existingUser.Email, resetCode);
             return new UserResponse(existingUser);
+        }
+
+        public async Task<UserResponse> SendResetPasswordEmailAsync(string email)
+        {
+            var resetCode = RandomCodeGenerator.GenerateRandomCode(6);
+            var user = new User
+            {
+                UserId = 0,
+                Username = "",
+                Email = email,
+                Password = "",
+                IsActive = true,
+                Token = resetCode
+            };
+            await EmailService.SendResetPasswordEmailAsync(email, resetCode);
+            return new UserResponse(user);
         }
 
         public async Task<IEnumerable<User>> ListAsync()
