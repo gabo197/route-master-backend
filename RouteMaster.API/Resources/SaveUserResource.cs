@@ -8,13 +8,12 @@ namespace RouteMaster.API.Resources
         [EmailAddress]
         public string Email { get; set; } = null!;
 
-        [Required]
-        public string Username { get; set; } = null!;
+        public string? Username { get; set; }
 
-        [Required]
         [MaxLength(30)]
-        public string Password { get; set; } = null!;
+        public string? Password { get; set; }
         public string? Token { get; set; }
+        public string? GoogleId { get; set; }
         [Required]
         public bool IsActive { get; set; }
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RouteMaster.API.Domain.Persistence.Contexts;
 
@@ -11,9 +12,11 @@ using RouteMaster.API.Domain.Persistence.Contexts;
 namespace RouteMaster.API.Migrations
 {
     [DbContext(typeof(RouteMasterContext))]
-    partial class RouteMasterContextModelSnapshot : ModelSnapshot
+    [Migration("20231006034907_AddGoogleIdColumn")]
+    partial class AddGoogleIdColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -753,40 +756,6 @@ namespace RouteMaster.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.Ticket", b =>
-                {
-                    b.Property<int>("TicketId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TicketId"));
-
-                    b.Property<string>("BusName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TransactionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TicketId");
-
-                    b.HasIndex("TransactionId")
-                        .IsUnique()
-                        .HasFilter("[TransactionId] IS NOT NULL");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Ticket", (string)null);
-                });
-
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Transaction", b =>
                 {
                     b.Property<int>("TransactionId")
@@ -882,12 +851,14 @@ namespace RouteMaster.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Password")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Token")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
@@ -1080,23 +1051,6 @@ namespace RouteMaster.API.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.Ticket", b =>
-                {
-                    b.HasOne("RouteMaster.API.Domain.Models.Transaction", "Transaction")
-                        .WithOne()
-                        .HasForeignKey("RouteMaster.API.Domain.Models.Ticket", "TransactionId");
-
-                    b.HasOne("RouteMaster.API.Domain.Models.Passenger", "Passenger")
-                        .WithMany("Tickets")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Passenger");
-
-                    b.Navigation("Transaction");
-                });
-
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Transaction", b =>
                 {
                     b.HasOne("RouteMaster.API.Domain.Models.TransactionType", "TransactionType")
@@ -1230,8 +1184,6 @@ namespace RouteMaster.API.Migrations
 
                     b.Navigation("AuditLog")
                         .IsRequired();
-
-                    b.Navigation("Tickets");
 
                     b.Navigation("Wallet")
                         .IsRequired();

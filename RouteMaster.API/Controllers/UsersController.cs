@@ -58,6 +58,7 @@ namespace RouteMaster.API.Controllers
             return Ok(userResource);
         }
 
+        [AllowAnonymous]
         [HttpPost("get-by-email")]
         [ProducesResponseType(typeof(UserResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]
@@ -70,6 +71,7 @@ namespace RouteMaster.API.Controllers
             return Ok(userResource);
         }
 
+        [AllowAnonymous]
         [HttpPost("send-reset-password-email")]
         [ProducesResponseType(typeof(UserResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]
@@ -101,6 +103,7 @@ namespace RouteMaster.API.Controllers
             return Ok(userResource);
         }
 
+        [AllowAnonymous]
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(UserResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]

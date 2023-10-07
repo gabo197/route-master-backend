@@ -48,15 +48,24 @@ namespace RouteMaster.API.Services
         {
             var users = await userRepo.ListAsync();
             var user = users.SingleOrDefault(x => x.Email == request.Email);
+            string token;
 
             if (user == null)
                 return null;
 
+            // If the user is logging in with Google, we don't need to check the password
+            if(user.Password == null)
+            {
+                token = GenerateJwtToken(user);
+                return new AuthenticationResponse(user, token);
+            }
+
             if (PasswordHasher.Validate(passwordHash: user.Password, password: request.Password) == false)
                 return null;
 
-            var token = GenerateJwtToken(user);
+            token = GenerateJwtToken(user);
             return new AuthenticationResponse(user, token);
+            
         }
 
         public async Task<UserResponse> DeleteAsync(int id)
@@ -122,7 +131,10 @@ namespace RouteMaster.API.Services
         {
             try
             {
-                user.Password = PasswordHasher.Hash(user.Password);
+                if (user.Password != null)
+                {
+                    user.Password = PasswordHasher.Hash(user.Password);
+                }
                 await userRepo.AddAsync(user);
                 await unitOfWork.CompleteAsync();
 
@@ -143,7 +155,13 @@ namespace RouteMaster.API.Services
 
             existingUser.Email = user.Email;
             existingUser.Username = user.Username;
-            existingUser.Password = PasswordHasher.Hash(user.Password);
+            if (user.Password != null)
+                existingUser.Password = PasswordHasher.Hash(user.Password);
+            else
+                existingUser.Password = null;
+            existingUser.GoogleId = user.GoogleId;
+            existingUser.Token = user.Token;
+            existingUser.IsActive = user.IsActive;
 
             try
             {
