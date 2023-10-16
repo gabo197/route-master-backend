@@ -54,7 +54,7 @@ namespace RouteMaster.API.Services
                 return null;
 
             // If the user is logging in with Google, we don't need to check the password
-            if(user.Password == null)
+            if(user.Password == null || request.Password == null)
             {
                 token = GenerateJwtToken(user);
                 return new AuthenticationResponse(user, token);
