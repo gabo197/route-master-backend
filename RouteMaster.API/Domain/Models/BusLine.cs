@@ -15,6 +15,5 @@
         public ICollection<BusStop> BusStops { get; set; } = null!;
         public ICollection<BusLineStop> BusLineStops { get; set; } = null!;
         public ICollection<Bus> Buses { get; set; } = null!;
-        public ICollection<TripDetail> TripDetails { get; set; } = null!;
     }
 }

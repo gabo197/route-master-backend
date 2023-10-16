@@ -121,6 +121,12 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<BusStop>().ToTable("BusStop");
 
+            modelBuilder.Entity<BusStop>().Property(bs => bs.Latitude)
+                .HasColumnType("decimal(12,9)");
+
+            modelBuilder.Entity<BusStop>().Property(bs => bs.Longitude)
+                .HasColumnType("decimal(12,9)");
+
             //Bus Line Stop
 
             modelBuilder.Entity<BusLineStop>().ToTable("BusLineStop");
@@ -172,6 +178,48 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 });
 
             //Trip
+
+            modelBuilder.Entity<Trip>().ToTable("Trip");
+            
+            modelBuilder.Entity<Trip>()
+                .HasOne(t => t.Passenger)
+                .WithMany(p => p.Trips)
+                .HasForeignKey(t => t.UserId);
+
+            modelBuilder.Entity<Trip>().Property(t => t.TotalPrice)
+                .HasColumnType("decimal(5,2)");
+
+            //Trip Detail
+
+            modelBuilder.Entity<TripDetail>().ToTable("TripDetail");
+
+            modelBuilder.Entity<TripDetail>()
+                .HasOne(td => td.Trip)
+                .WithMany(t => t.TripDetails)
+                .HasForeignKey(td => td.TripId);
+
+            modelBuilder.Entity<TripDetail>()
+                .HasOne(td => td.Bus)
+                .WithMany()
+                .HasForeignKey(td => td.BusId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<TripDetail>()
+                .HasOne(td => td.BusLine)
+                .WithMany()
+                .HasForeignKey(td => td.BusLineId);
+
+            modelBuilder.Entity<TripDetail>()
+                .HasOne(t => t.OriginBusStop)
+                .WithMany()
+                .HasForeignKey(t => t.OriginBusStopId)
+                .OnDelete(DeleteBehavior.NoAction); ;
+
+            modelBuilder.Entity<TripDetail>()
+                .HasOne(t => t.DestinationBusStop)
+                .WithMany()
+                .HasForeignKey(t => t.DestinationBusStopId)
+                .OnDelete(DeleteBehavior.NoAction); ;
 
             //Ticket
 
