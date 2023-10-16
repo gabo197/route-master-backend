@@ -7,7 +7,6 @@ public class Wallet
     public Passenger Passenger { get; set; } = null!;
     public decimal Balance { get; set; }
     public DateTime LastUpdate { get; set; }
-    //public ICollection<Transaction> Transactions { get; set; } = null!;
     public ICollection<RechargeTransaction> RechargeTransactions { get; set; } = null!;
     public ICollection<PaymentTransaction> PaymentTransactions { get; set; } = null!;
     public ICollection<TransferTransaction> SentTransferTransactions { get; set; } = null!;

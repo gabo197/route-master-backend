@@ -29,6 +29,16 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<PaymentTransaction> PaymentTransactions { get; set; } = null!;
         public DbSet<RechargeTransaction> RechargeTransactions { get; set; } = null!;
         public DbSet<Ticket> Tickets { get; set; } = null!;
+        public DbSet<BusStop> BusStops { get; set; } = null!;
+        public DbSet<BusLine> BusLines { get; set; } = null!;
+        public DbSet<BusLineStop> BusLineStops { get; set; } = null!;
+        public DbSet<Company> Companies { get; set; } = null!;
+        public DbSet<LineType> LineTypes { get; set; } = null!;
+        public DbSet<Bus> Buses { get; set; } = null!;
+        public DbSet<BusDriver> BusDrivers { get; set; } = null!;
+        public DbSet<DocumentType> DocumentTypes { get; set; } = null!;
+        public DbSet<Trip> Trips { get; set; } = null!;
+        public DbSet<TripDetail> TripDetails { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -38,6 +48,130 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Bus
+
+            modelBuilder.Entity<Bus>().ToTable("Bus");
+
+            modelBuilder.Entity<Bus>()
+                .HasOne(b => b.BusLine)
+                .WithMany(bl => bl.Buses)
+                .HasForeignKey(b => b.BusLineId);
+            
+            modelBuilder.Entity<Bus>()
+                .Property(b => b.PlateNumber)
+                .HasMaxLength(6);
+            
+            modelBuilder.Entity<Bus>()
+                .HasIndex(b => b.PlateNumber)
+                .IsUnique();
+
+            modelBuilder.Entity<Bus>()
+                .HasAlternateKey(b => b.PlateNumber);
+
+            //Bus Driver
+
+            modelBuilder.Entity<BusDriver>().ToTable("BusDriver");
+
+            modelBuilder.Entity<BusDriver>()
+                .HasOne(bd => bd.Bus)
+                .WithOne(b => b.BusDriver)
+                .HasForeignKey<BusDriver>(b => b.BusId)
+                .IsRequired(false); 
+
+            modelBuilder.Entity<BusDriver>()
+                .HasOne(bd => bd.DocumentType)
+                .WithMany(dt => dt.BusDrivers)
+                .HasForeignKey(bd => bd.DocumentTypeId);
+
+            modelBuilder.Entity<BusDriver>()
+                .HasIndex(bd => new {bd.DocumentTypeId, bd.DocumentNumber})
+                .IsUnique();
+
+            modelBuilder.Entity<BusDriver>()
+                .HasAlternateKey(bd => new {bd.DocumentTypeId, bd.DocumentNumber});
+
+            //Bus Line
+
+            modelBuilder.Entity<BusLine>().ToTable("BusLine");
+
+            modelBuilder.Entity<BusLine>()
+                .HasOne(bl => bl.Company)
+                .WithMany(c => c.BusLines)
+                .HasForeignKey(bl => bl.CompanyId);
+
+            modelBuilder.Entity<BusLine>()
+                .HasOne(bl => bl.LineType)
+                .WithMany(lt => lt.BusLines)
+                .HasForeignKey(bl => bl.LineTypeId);
+
+            modelBuilder.Entity<BusLine>()
+                .HasMany(bl => bl.BusStops)
+                .WithMany(bs => bs.BusLines)
+                .UsingEntity<BusLineStop>();
+
+            modelBuilder.Entity<BusLine>()
+                .HasIndex(bl => bl.Code)
+                .IsUnique();
+
+            modelBuilder.Entity<BusLine>()
+                .HasAlternateKey(bl => bl.Code);
+
+            //Bus Stop
+
+            modelBuilder.Entity<BusStop>().ToTable("BusStop");
+
+            //Bus Line Stop
+
+            modelBuilder.Entity<BusLineStop>().ToTable("BusLineStop");
+
+            //Company
+
+            modelBuilder.Entity<Company>().ToTable("Company");
+
+            //Document Type
+
+            modelBuilder.Entity<DocumentType>().ToTable("DocumentType");
+
+            modelBuilder.Entity<DocumentType>().HasData(
+                new DocumentType
+                {
+                    DocumentTypeId = 1,
+                    Name = "DNI"
+                },
+                new DocumentType
+                {
+                    DocumentTypeId = 2,
+                    Name = "Carné de extranjería"
+                },
+                new DocumentType
+                {
+                    DocumentTypeId = 3,
+                    Name = "Pasaporte"
+                });
+
+            //Line Type
+
+            modelBuilder.Entity<LineType>().ToTable("LineType");
+
+            modelBuilder.Entity<LineType>().HasData(
+                new LineType
+                {
+                    LineTypeId = 1,
+                    Name = "Autobús"
+                },
+                new LineType
+                {
+                    LineTypeId = 2,
+                    Name = "Metro"
+                },
+                new LineType
+                {
+                    LineTypeId = 3,
+                    Name = "Subterráneo"
+                });
+
+            //Trip
 
             //Ticket
 
