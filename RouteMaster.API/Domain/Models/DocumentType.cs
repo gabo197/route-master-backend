@@ -4,6 +4,5 @@
     {
         public int DocumentTypeId { get; set; }
         public string Name { get; set; } = null!;
-        public ICollection<BusDriver> BusDrivers { get; set; } = null!;
     }
 }

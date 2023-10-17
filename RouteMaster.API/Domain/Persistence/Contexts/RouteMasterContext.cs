@@ -33,12 +33,16 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<BusLine> BusLines { get; set; } = null!;
         public DbSet<BusLineStop> BusLineStops { get; set; } = null!;
         public DbSet<Company> Companies { get; set; } = null!;
-        public DbSet<LineType> LineTypes { get; set; } = null!;
+        public DbSet<VehicleType> VehicleTypes { get; set; } = null!;
         public DbSet<Bus> Buses { get; set; } = null!;
         public DbSet<BusDriver> BusDrivers { get; set; } = null!;
         public DbSet<DocumentType> DocumentTypes { get; set; } = null!;
         public DbSet<Trip> Trips { get; set; } = null!;
         public DbSet<TripDetail> TripDetails { get; set; } = null!;
+        public DbSet<Line> Lines { get; set; } = null!;
+        public DbSet<Stop> Stops { get; set; } = null!;
+        public DbSet<Vehicle> Vehicles { get; set; } = null!;
+        public DbSet<Driver> Drivers { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,77 +53,164 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
-            //Bus
+            //Vehicle
 
-            modelBuilder.Entity<Bus>().ToTable("Bus");
+            modelBuilder.Entity<Vehicle>().ToTable("Vehicle");
 
-            modelBuilder.Entity<Bus>()
-                .HasOne(b => b.BusLine)
-                .WithMany(bl => bl.Buses)
-                .HasForeignKey(b => b.BusLineId);
-            
-            modelBuilder.Entity<Bus>()
+            modelBuilder.Entity<Vehicle>().HasKey(v => v.VehicleId);
+
+            modelBuilder.Entity<Vehicle>()
+                .HasDiscriminator(l => l.VehicleTypeId)
+                .HasValue<Bus>(1)
+                .HasValue<Railway>(2)
+                .HasValue<Subway>(3);
+
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(l => l.VehicleType)
+                .WithMany(vt => vt.Vehicles)
+                .HasForeignKey(l => l.VehicleTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Vehicle>()
+                .HasOne(b => b.Line)
+                .WithMany(bl => bl.Vehicles)
+                .HasForeignKey(b => b.LineId);
+
+            modelBuilder.Entity<Vehicle>()
                 .Property(b => b.PlateNumber)
                 .HasMaxLength(6);
-            
-            modelBuilder.Entity<Bus>()
+
+            modelBuilder.Entity<Vehicle>()
                 .HasIndex(b => b.PlateNumber)
                 .IsUnique();
 
-            modelBuilder.Entity<Bus>()
+            modelBuilder.Entity<Vehicle>()
                 .HasAlternateKey(b => b.PlateNumber);
+
+            //Bus
+
+            modelBuilder.Entity<Bus>().ToTable("Vehicle");
+
+            //Railway
+
+            modelBuilder.Entity<Railway>().ToTable("Vehicle");
+
+            //Subway
+
+            modelBuilder.Entity<Subway>().ToTable("Vehicle");
+
+            //Driver
+
+            modelBuilder.Entity<Driver>().ToTable("Driver");
+
+            modelBuilder.Entity<Driver>().HasKey(v => v.DriverId);
+
+            modelBuilder.Entity<Driver>()
+                .HasDiscriminator(l => l.VehicleTypeId)
+                .HasValue<BusDriver>(1)
+                .HasValue<RailwayDriver>(2)
+                .HasValue<SubwayDriver>(3);
+
+            modelBuilder.Entity<Driver>()
+                .HasOne(l => l.VehicleType)
+                .WithMany(vt => vt.Drivers)
+                .HasForeignKey(l => l.VehicleTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Driver>()
+                .HasOne(bd => bd.Vehicle)
+                .WithOne(b => b.Driver)
+                .HasForeignKey<Driver>(b => b.VehicleId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<Driver>()
+                .HasOne(bd => bd.DocumentType)         
+                .WithMany()
+                .HasForeignKey(bd => bd.DocumentTypeId);
+
+            modelBuilder.Entity<Driver>()
+                .HasIndex(bd => new { bd.DocumentTypeId, bd.DocumentNumber })
+                .IsUnique();
+
+            modelBuilder.Entity<Driver>()
+                .HasAlternateKey(bd => new { bd.DocumentTypeId, bd.DocumentNumber });
 
             //Bus Driver
 
-            modelBuilder.Entity<BusDriver>().ToTable("BusDriver");
+            modelBuilder.Entity<BusDriver>().ToTable("Driver");
 
-            modelBuilder.Entity<BusDriver>()
-                .HasOne(bd => bd.Bus)
-                .WithOne(b => b.BusDriver)
-                .HasForeignKey<BusDriver>(b => b.BusId)
-                .IsRequired(false); 
+            //Railway Driver
 
-            modelBuilder.Entity<BusDriver>()
-                .HasOne(bd => bd.DocumentType)
-                .WithMany(dt => dt.BusDrivers)
-                .HasForeignKey(bd => bd.DocumentTypeId);
+            modelBuilder.Entity<RailwayDriver>().ToTable("Driver");
 
-            modelBuilder.Entity<BusDriver>()
-                .HasIndex(bd => new {bd.DocumentTypeId, bd.DocumentNumber})
-                .IsUnique();
+            //Subway Driver
 
-            modelBuilder.Entity<BusDriver>()
-                .HasAlternateKey(bd => new {bd.DocumentTypeId, bd.DocumentNumber});
+            modelBuilder.Entity<SubwayDriver>().ToTable("Driver");
 
-            //Bus Line
+            //Line
 
-            modelBuilder.Entity<BusLine>().ToTable("BusLine");
+            modelBuilder.Entity<Line>().ToTable("Line");
 
-            modelBuilder.Entity<BusLine>()
-                .HasOne(bl => bl.Company)
-                .WithMany(c => c.BusLines)
-                .HasForeignKey(bl => bl.CompanyId);
+            modelBuilder.Entity<Line>().HasKey(v => v.LineId);
 
-            modelBuilder.Entity<BusLine>()
-                .HasOne(bl => bl.LineType)
-                .WithMany(lt => lt.BusLines)
-                .HasForeignKey(bl => bl.LineTypeId);
+            modelBuilder.Entity<Line>()
+                .HasDiscriminator(l => l.VehicleTypeId)
+                .HasValue<BusLine>(1)
+                .HasValue<RailwayLine>(2)
+                .HasValue<SubwayLine>(3);
 
-            modelBuilder.Entity<BusLine>()
-                .HasMany(bl => bl.BusStops)
-                .WithMany(bs => bs.BusLines)
-                .UsingEntity<BusLineStop>();
+            modelBuilder.Entity<Line>()
+                .HasMany(bl => bl.Stops)
+                .WithMany(bs => bs.Lines)
+                .UsingEntity<LineStop>();
 
-            modelBuilder.Entity<BusLine>()
+            modelBuilder.Entity<Line>()
+                .HasOne(l => l.Company)
+                .WithMany(c => c.Lines)
+                .HasForeignKey(l => l.CompanyId);
+
+            modelBuilder.Entity<Line>()
+                .HasOne(l => l.VehicleType)
+                .WithMany(vt => vt.Lines)
+                .HasForeignKey(l => l.VehicleTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Line>()
                 .HasIndex(bl => bl.Code)
                 .IsUnique();
 
-            modelBuilder.Entity<BusLine>()
+            modelBuilder.Entity<Line>()
                 .HasAlternateKey(bl => bl.Code);
 
-            //Bus Stop
+            //Bus Line
 
-            modelBuilder.Entity<BusStop>().ToTable("BusStop");
+            modelBuilder.Entity<BusLine>().ToTable("Line");
+
+            //Railway Line
+
+            modelBuilder.Entity<RailwayLine>().ToTable("Line");
+
+            //Subway Line
+
+            modelBuilder.Entity<SubwayLine>().ToTable("Line");
+
+            //Stop
+
+            modelBuilder.Entity<Stop>().ToTable("Stop");
+
+            modelBuilder.Entity<Stop>().HasKey(v => v.StopId);
+
+            modelBuilder.Entity<Stop>()
+                .HasDiscriminator(l => l.VehicleTypeId)
+                .HasValue<BusStop>(1)
+                .HasValue<RailwayStop>(2)
+                .HasValue<SubwayStop>(3);
+
+            modelBuilder.Entity<Stop>()
+                .HasOne(l => l.VehicleType)
+                .WithMany(vt => vt.Stops)
+                .HasForeignKey(l => l.VehicleTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<BusStop>().Property(bs => bs.Latitude)
                 .HasColumnType("decimal(12,9)");
@@ -127,9 +218,48 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
             modelBuilder.Entity<BusStop>().Property(bs => bs.Longitude)
                 .HasColumnType("decimal(12,9)");
 
+            //Bus Stop
+
+            modelBuilder.Entity<BusStop>().ToTable("Stop");
+
+            //Railway Stop
+
+            modelBuilder.Entity<RailwayStop>().ToTable("Stop");
+
+            //Subway Stop
+
+            modelBuilder.Entity<SubwayStop>().ToTable("Stop");
+
+            //Line Stop
+
+            modelBuilder.Entity<LineStop>().ToTable("LineStop");
+
+            modelBuilder.Entity<LineStop>()
+                .HasKey(c => new { c.LineId, c.StopId });
+
+            modelBuilder.Entity<LineStop>()
+                .HasDiscriminator(ls => ls.VehicleTypeId)
+                .HasValue<BusLineStop>(1)
+                .HasValue<RailwayLineStop>(2)
+                .HasValue<SubwayLineStop>(3);
+
+            modelBuilder.Entity<LineStop>()
+                .HasOne(ls => ls.VehicleType)
+                .WithMany(vt => vt.LineStops)
+                .HasForeignKey(ls => ls.VehicleTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
             //Bus Line Stop
 
-            modelBuilder.Entity<BusLineStop>().ToTable("BusLineStop");
+            modelBuilder.Entity<BusLineStop>().ToTable("LineStop");
+
+            //Railway Line Stop
+
+            modelBuilder.Entity<RailwayLineStop>().ToTable("LineStop");
+
+            //Subway Line Stop
+
+            modelBuilder.Entity<SubwayLineStop>().ToTable("LineStop");
 
             //Company
 
@@ -158,22 +288,22 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             //Line Type
 
-            modelBuilder.Entity<LineType>().ToTable("LineType");
+            modelBuilder.Entity<VehicleType>().ToTable("VehicleType");
 
-            modelBuilder.Entity<LineType>().HasData(
-                new LineType
+            modelBuilder.Entity<VehicleType>().HasData(
+                new VehicleType
                 {
-                    LineTypeId = 1,
+                    VehicleTypeId = 1,
                     Name = "Autobús"
                 },
-                new LineType
+                new VehicleType
                 {
-                    LineTypeId = 2,
+                    VehicleTypeId = 2,
                     Name = "Metro"
                 },
-                new LineType
+                new VehicleType
                 {
-                    LineTypeId = 3,
+                    VehicleTypeId = 3,
                     Name = "Subterráneo"
                 });
 
@@ -199,27 +329,27 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .HasForeignKey(td => td.TripId);
 
             modelBuilder.Entity<TripDetail>()
-                .HasOne(td => td.Bus)
+                .HasOne(td => td.Vehicle)
                 .WithMany()
-                .HasForeignKey(td => td.BusId)
+                .HasForeignKey(td => td.VehicleId)
                 .IsRequired(false);
 
             modelBuilder.Entity<TripDetail>()
-                .HasOne(td => td.BusLine)
+                .HasOne(td => td.Line)
                 .WithMany()
-                .HasForeignKey(td => td.BusLineId);
+                .HasForeignKey(td => td.LineId);
 
             modelBuilder.Entity<TripDetail>()
-                .HasOne(t => t.OriginBusStop)
+                .HasOne(t => t.OriginStop)
                 .WithMany()
-                .HasForeignKey(t => t.OriginBusStopId)
-                .OnDelete(DeleteBehavior.NoAction); ;
+                .HasForeignKey(t => t.OriginStopId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<TripDetail>()
-                .HasOne(t => t.DestinationBusStop)
+                .HasOne(t => t.DestinationStop)
                 .WithMany()
-                .HasForeignKey(t => t.DestinationBusStopId)
-                .OnDelete(DeleteBehavior.NoAction); ;
+                .HasForeignKey(t => t.DestinationStopId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             //Ticket
 

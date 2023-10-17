@@ -12,5 +12,8 @@
         public int VehicleTypeId { get; set; }
         public Company Company { get; set; } = null!;
         public VehicleType VehicleType { get; set; } = null!;
+        public ICollection<Stop> Stops { get; set; } = null!;
+        public ICollection<LineStop> LineStops { get; set; } = null!;
+        public ICollection<Vehicle> Vehicles { get; set; } = null!;
     }
 }

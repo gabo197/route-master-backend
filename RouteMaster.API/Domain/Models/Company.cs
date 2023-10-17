@@ -4,6 +4,6 @@
     {
         public int CompanyId { get; set; }
         public string Name { get; set; } = null!;
-        public ICollection<BusLine> BusLines { get; set; } = null!;
+        public ICollection<Line> Lines { get; set; } = null!;
     }
 }

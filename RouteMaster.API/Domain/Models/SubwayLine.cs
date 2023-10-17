@@ -1,6 +1,6 @@
 ﻿namespace RouteMaster.API.Domain.Models
 {
-    public class BusLine : Line
+    public class SubwayLine : Line
     {
     }
 }

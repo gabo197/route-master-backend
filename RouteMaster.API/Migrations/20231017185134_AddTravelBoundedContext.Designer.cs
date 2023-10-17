@@ -12,7 +12,7 @@ using RouteMaster.API.Domain.Persistence.Contexts;
 namespace RouteMaster.API.Migrations
 {
     [DbContext(typeof(RouteMasterContext))]
-    [Migration("20231016150511_AddTravelBoundedContext")]
+    [Migration("20231017185134_AddTravelBoundedContext")]
     partial class AddTravelBoundedContext
     {
         /// <inheritdoc />
@@ -144,159 +144,6 @@ namespace RouteMaster.API.Migrations
                     b.HasKey("UserId");
 
                     b.ToTable("AuditLog", (string)null);
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.Bus", b =>
-                {
-                    b.Property<int>("BusId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusId"));
-
-                    b.Property<int>("BusLineId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PlateNumber")
-                        .IsRequired()
-                        .HasMaxLength(6)
-                        .HasColumnType("nvarchar(6)");
-
-                    b.HasKey("BusId");
-
-                    b.HasAlternateKey("PlateNumber");
-
-                    b.HasIndex("BusLineId");
-
-                    b.HasIndex("PlateNumber")
-                        .IsUnique();
-
-                    b.ToTable("Bus", (string)null);
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusDriver", b =>
-                {
-                    b.Property<int>("BusDriverId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusDriverId"));
-
-                    b.Property<int?>("BusId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DocumentNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("DocumentTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BusDriverId");
-
-                    b.HasAlternateKey("DocumentTypeId", "DocumentNumber");
-
-                    b.HasIndex("BusId")
-                        .IsUnique()
-                        .HasFilter("[BusId] IS NOT NULL");
-
-                    b.HasIndex("DocumentTypeId", "DocumentNumber")
-                        .IsUnique();
-
-                    b.ToTable("BusDriver", (string)null);
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLine", b =>
-                {
-                    b.Property<int>("BusLineId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusLineId"));
-
-                    b.Property<string>("Alias")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Color")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompanyId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("FirstStop")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastStop")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LineTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BusLineId");
-
-                    b.HasAlternateKey("Code");
-
-                    b.HasIndex("Code")
-                        .IsUnique();
-
-                    b.HasIndex("CompanyId");
-
-                    b.HasIndex("LineTypeId");
-
-                    b.ToTable("BusLine", (string)null);
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLineStop", b =>
-                {
-                    b.Property<int>("BusLineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BusStopId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BusLineId", "BusStopId");
-
-                    b.HasIndex("BusStopId");
-
-                    b.ToTable("BusLineStop", (string)null);
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusStop", b =>
-                {
-                    b.Property<int>("BusStopId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BusStopId"));
-
-                    b.Property<decimal>("Latitude")
-                        .HasColumnType("decimal(12,9)");
-
-                    b.Property<decimal>("Longitude")
-                        .HasColumnType("decimal(12,9)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BusStopId");
-
-                    b.ToTable("BusStop", (string)null);
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Company", b =>
@@ -885,38 +732,128 @@ namespace RouteMaster.API.Migrations
                         });
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.LineType", b =>
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Driver", b =>
                 {
-                    b.Property<int>("LineTypeId")
+                    b.Property<int>("DriverId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LineTypeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DriverId"));
 
-                    b.Property<string>("Name")
+                    b.Property<string>("DocumentNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("DocumentTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("LineTypeId");
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.ToTable("LineType", (string)null);
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
 
-                    b.HasData(
-                        new
-                        {
-                            LineTypeId = 1,
-                            Name = "Autobús"
-                        },
-                        new
-                        {
-                            LineTypeId = 2,
-                            Name = "Metro"
-                        },
-                        new
-                        {
-                            LineTypeId = 3,
-                            Name = "Subterráneo"
-                        });
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DriverId");
+
+                    b.HasAlternateKey("DocumentTypeId", "DocumentNumber");
+
+                    b.HasIndex("VehicleId")
+                        .IsUnique()
+                        .HasFilter("[VehicleId] IS NOT NULL");
+
+                    b.HasIndex("VehicleTypeId");
+
+                    b.HasIndex("DocumentTypeId", "DocumentNumber")
+                        .IsUnique();
+
+                    b.ToTable("Driver", (string)null);
+
+                    b.HasDiscriminator<int>("VehicleTypeId");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Line", b =>
+                {
+                    b.Property<int>("LineId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LineId"));
+
+                    b.Property<string>("Alias")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Color")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CompanyId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("FirstStop")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastStop")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LineId");
+
+                    b.HasAlternateKey("Code");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("CompanyId");
+
+                    b.HasIndex("VehicleTypeId");
+
+                    b.ToTable("Line", (string)null);
+
+                    b.HasDiscriminator<int>("VehicleTypeId");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.LineStop", b =>
+                {
+                    b.Property<int>("LineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StopId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LineId", "StopId");
+
+                    b.HasIndex("StopId");
+
+                    b.HasIndex("VehicleTypeId");
+
+                    b.ToTable("LineStop", (string)null);
+
+                    b.HasDiscriminator<int>("VehicleTypeId");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.PaymentMethod", b =>
@@ -992,6 +929,38 @@ namespace RouteMaster.API.Migrations
                             IsActive = true,
                             Name = "Callao"
                         });
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Stop", b =>
+                {
+                    b.Property<int>("StopId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StopId"));
+
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(12,9)");
+
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(12,9)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("StopId");
+
+                    b.HasIndex("VehicleTypeId");
+
+                    b.ToTable("Stop", (string)null);
+
+                    b.HasDiscriminator<int>("VehicleTypeId");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Ticket", b =>
@@ -1139,35 +1108,35 @@ namespace RouteMaster.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TripDetailId"));
 
-                    b.Property<int?>("BusId")
+                    b.Property<int>("DestinationStopId")
                         .HasColumnType("int");
 
-                    b.Property<int>("BusLineId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DestinationBusStopId")
+                    b.Property<int>("LineId")
                         .HasColumnType("int");
 
                     b.Property<int>("Order")
                         .HasColumnType("int");
 
-                    b.Property<int>("OriginBusStopId")
+                    b.Property<int>("OriginStopId")
                         .HasColumnType("int");
 
                     b.Property<int>("TripId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("VehicleId")
+                        .HasColumnType("int");
+
                     b.HasKey("TripDetailId");
 
-                    b.HasIndex("BusId");
+                    b.HasIndex("DestinationStopId");
 
-                    b.HasIndex("BusLineId");
+                    b.HasIndex("LineId");
 
-                    b.HasIndex("DestinationBusStopId");
-
-                    b.HasIndex("OriginBusStopId");
+                    b.HasIndex("OriginStopId");
 
                     b.HasIndex("TripId");
+
+                    b.HasIndex("VehicleId");
 
                     b.ToTable("TripDetail", (string)null);
                 });
@@ -1207,6 +1176,77 @@ namespace RouteMaster.API.Migrations
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Vehicle", b =>
+                {
+                    b.Property<int>("VehicleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleId"));
+
+                    b.Property<int>("LineId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlateNumber")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("nvarchar(6)");
+
+                    b.Property<int>("VehicleTypeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VehicleId");
+
+                    b.HasAlternateKey("PlateNumber");
+
+                    b.HasIndex("LineId");
+
+                    b.HasIndex("PlateNumber")
+                        .IsUnique();
+
+                    b.HasIndex("VehicleTypeId");
+
+                    b.ToTable("Vehicle", (string)null);
+
+                    b.HasDiscriminator<int>("VehicleTypeId");
+
+                    b.UseTphMappingStrategy();
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.VehicleType", b =>
+                {
+                    b.Property<int>("VehicleTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VehicleTypeId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("VehicleTypeId");
+
+                    b.ToTable("VehicleType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            VehicleTypeId = 1,
+                            Name = "Autobús"
+                        },
+                        new
+                        {
+                            VehicleTypeId = 2,
+                            Name = "Metro"
+                        },
+                        new
+                        {
+                            VehicleTypeId = 3,
+                            Name = "Subterráneo"
+                        });
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Wallet", b =>
@@ -1260,6 +1300,114 @@ namespace RouteMaster.API.Migrations
                     b.HasDiscriminator().HasValue(2);
                 });
 
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusDriver", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Driver");
+
+                    b.ToTable("Driver", (string)null);
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.RailwayDriver", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Driver");
+
+                    b.ToTable("Driver", (string)null);
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.SubwayDriver", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Driver");
+
+                    b.ToTable("Driver", (string)null);
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLine", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Line");
+
+                    b.ToTable("Line", (string)null);
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.RailwayLine", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Line");
+
+                    b.ToTable("Line", (string)null);
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.SubwayLine", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Line");
+
+                    b.ToTable("Line", (string)null);
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLineStop", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.LineStop");
+
+                    b.ToTable("LineStop", (string)null);
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.RailwayLineStop", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.LineStop");
+
+                    b.ToTable("LineStop", (string)null);
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.SubwayLineStop", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.LineStop");
+
+                    b.ToTable("LineStop", (string)null);
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusStop", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Stop");
+
+                    b.ToTable("Stop", (string)null);
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.RailwayStop", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Stop");
+
+                    b.ToTable("Stop", (string)null);
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.SubwayStop", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Stop");
+
+                    b.ToTable("Stop", (string)null);
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
             modelBuilder.Entity("RouteMaster.API.Domain.Models.PaymentTransaction", b =>
                 {
                     b.HasBaseType("RouteMaster.API.Domain.Models.Transaction");
@@ -1303,6 +1451,33 @@ namespace RouteMaster.API.Migrations
                         {
                             t.HasCheckConstraint("CK_Transaction_Amount", "Amount > 0.00");
                         });
+
+                    b.HasDiscriminator().HasValue(3);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Bus", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Vehicle");
+
+                    b.ToTable("Vehicle", (string)null);
+
+                    b.HasDiscriminator().HasValue(1);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Railway", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Vehicle");
+
+                    b.ToTable("Vehicle", (string)null);
+
+                    b.HasDiscriminator().HasValue(2);
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Subway", b =>
+                {
+                    b.HasBaseType("RouteMaster.API.Domain.Models.Vehicle");
+
+                    b.ToTable("Vehicle", (string)null);
 
                     b.HasDiscriminator().HasValue(3);
                 });
@@ -1356,72 +1531,6 @@ namespace RouteMaster.API.Migrations
                     b.Navigation("Passenger");
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.Bus", b =>
-                {
-                    b.HasOne("RouteMaster.API.Domain.Models.BusLine", "BusLine")
-                        .WithMany("Buses")
-                        .HasForeignKey("BusLineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BusLine");
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusDriver", b =>
-                {
-                    b.HasOne("RouteMaster.API.Domain.Models.Bus", "Bus")
-                        .WithOne("BusDriver")
-                        .HasForeignKey("RouteMaster.API.Domain.Models.BusDriver", "BusId");
-
-                    b.HasOne("RouteMaster.API.Domain.Models.DocumentType", "DocumentType")
-                        .WithMany("BusDrivers")
-                        .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bus");
-
-                    b.Navigation("DocumentType");
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLine", b =>
-                {
-                    b.HasOne("RouteMaster.API.Domain.Models.Company", "Company")
-                        .WithMany("BusLines")
-                        .HasForeignKey("CompanyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RouteMaster.API.Domain.Models.LineType", "LineType")
-                        .WithMany("BusLines")
-                        .HasForeignKey("LineTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Company");
-
-                    b.Navigation("LineType");
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLineStop", b =>
-                {
-                    b.HasOne("RouteMaster.API.Domain.Models.BusLine", "BusLine")
-                        .WithMany("BusLineStops")
-                        .HasForeignKey("BusLineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RouteMaster.API.Domain.Models.BusStop", "BusStop")
-                        .WithMany("BusLineStops")
-                        .HasForeignKey("BusStopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("BusLine");
-
-                    b.Navigation("BusStop");
-                });
-
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Department", b =>
                 {
                     b.HasOne("RouteMaster.API.Domain.Models.Country", "Country")
@@ -1444,6 +1553,77 @@ namespace RouteMaster.API.Migrations
                     b.Navigation("Province");
                 });
 
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Driver", b =>
+                {
+                    b.HasOne("RouteMaster.API.Domain.Models.DocumentType", "DocumentType")
+                        .WithMany()
+                        .HasForeignKey("DocumentTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RouteMaster.API.Domain.Models.Vehicle", "Vehicle")
+                        .WithOne("Driver")
+                        .HasForeignKey("RouteMaster.API.Domain.Models.Driver", "VehicleId");
+
+                    b.HasOne("RouteMaster.API.Domain.Models.VehicleType", "VehicleType")
+                        .WithMany("Drivers")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("DocumentType");
+
+                    b.Navigation("Vehicle");
+
+                    b.Navigation("VehicleType");
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Line", b =>
+                {
+                    b.HasOne("RouteMaster.API.Domain.Models.Company", "Company")
+                        .WithMany("Lines")
+                        .HasForeignKey("CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RouteMaster.API.Domain.Models.VehicleType", "VehicleType")
+                        .WithMany("Lines")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Company");
+
+                    b.Navigation("VehicleType");
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.LineStop", b =>
+                {
+                    b.HasOne("RouteMaster.API.Domain.Models.Line", "Line")
+                        .WithMany("LineStops")
+                        .HasForeignKey("LineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RouteMaster.API.Domain.Models.Stop", "Stop")
+                        .WithMany("LineStops")
+                        .HasForeignKey("StopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RouteMaster.API.Domain.Models.VehicleType", "VehicleType")
+                        .WithMany("LineStops")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Line");
+
+                    b.Navigation("Stop");
+
+                    b.Navigation("VehicleType");
+                });
+
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Province", b =>
                 {
                     b.HasOne("RouteMaster.API.Domain.Models.Department", "Department")
@@ -1453,6 +1633,17 @@ namespace RouteMaster.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Stop", b =>
+                {
+                    b.HasOne("RouteMaster.API.Domain.Models.VehicleType", "VehicleType")
+                        .WithMany("Stops")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("VehicleType");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Ticket", b =>
@@ -1496,25 +1687,21 @@ namespace RouteMaster.API.Migrations
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.TripDetail", b =>
                 {
-                    b.HasOne("RouteMaster.API.Domain.Models.Bus", "Bus")
+                    b.HasOne("RouteMaster.API.Domain.Models.Stop", "DestinationStop")
                         .WithMany()
-                        .HasForeignKey("BusId");
-
-                    b.HasOne("RouteMaster.API.Domain.Models.BusLine", "BusLine")
-                        .WithMany()
-                        .HasForeignKey("BusLineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RouteMaster.API.Domain.Models.BusStop", "DestinationBusStop")
-                        .WithMany()
-                        .HasForeignKey("DestinationBusStopId")
+                        .HasForeignKey("DestinationStopId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("RouteMaster.API.Domain.Models.BusStop", "OriginBusStop")
+                    b.HasOne("RouteMaster.API.Domain.Models.Line", "Line")
                         .WithMany()
-                        .HasForeignKey("OriginBusStopId")
+                        .HasForeignKey("LineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RouteMaster.API.Domain.Models.Stop", "OriginStop")
+                        .WithMany()
+                        .HasForeignKey("OriginStopId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -1524,15 +1711,38 @@ namespace RouteMaster.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bus");
+                    b.HasOne("RouteMaster.API.Domain.Models.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId");
 
-                    b.Navigation("BusLine");
+                    b.Navigation("DestinationStop");
 
-                    b.Navigation("DestinationBusStop");
+                    b.Navigation("Line");
 
-                    b.Navigation("OriginBusStop");
+                    b.Navigation("OriginStop");
 
                     b.Navigation("Trip");
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Vehicle", b =>
+                {
+                    b.HasOne("RouteMaster.API.Domain.Models.Line", "Line")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("LineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RouteMaster.API.Domain.Models.VehicleType", "VehicleType")
+                        .WithMany("Vehicles")
+                        .HasForeignKey("VehicleTypeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Line");
+
+                    b.Navigation("VehicleType");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Wallet", b =>
@@ -1603,26 +1813,9 @@ namespace RouteMaster.API.Migrations
                     b.Navigation("Accounts");
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.Bus", b =>
-                {
-                    b.Navigation("BusDriver");
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusLine", b =>
-                {
-                    b.Navigation("BusLineStops");
-
-                    b.Navigation("Buses");
-                });
-
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.BusStop", b =>
-                {
-                    b.Navigation("BusLineStops");
-                });
-
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Company", b =>
                 {
-                    b.Navigation("BusLines");
+                    b.Navigation("Lines");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Country", b =>
@@ -1640,14 +1833,11 @@ namespace RouteMaster.API.Migrations
                     b.Navigation("Addresses");
                 });
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.DocumentType", b =>
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Line", b =>
                 {
-                    b.Navigation("BusDrivers");
-                });
+                    b.Navigation("LineStops");
 
-            modelBuilder.Entity("RouteMaster.API.Domain.Models.LineType", b =>
-                {
-                    b.Navigation("BusLines");
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.PaymentMethod", b =>
@@ -1658,6 +1848,11 @@ namespace RouteMaster.API.Migrations
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Province", b =>
                 {
                     b.Navigation("Districts");
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Stop", b =>
+                {
+                    b.Navigation("LineStops");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.TransactionType", b =>
@@ -1674,6 +1869,24 @@ namespace RouteMaster.API.Migrations
                 {
                     b.Navigation("Account")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.Vehicle", b =>
+                {
+                    b.Navigation("Driver");
+                });
+
+            modelBuilder.Entity("RouteMaster.API.Domain.Models.VehicleType", b =>
+                {
+                    b.Navigation("Drivers");
+
+                    b.Navigation("LineStops");
+
+                    b.Navigation("Lines");
+
+                    b.Navigation("Stops");
+
+                    b.Navigation("Vehicles");
                 });
 
             modelBuilder.Entity("RouteMaster.API.Domain.Models.Wallet", b =>
