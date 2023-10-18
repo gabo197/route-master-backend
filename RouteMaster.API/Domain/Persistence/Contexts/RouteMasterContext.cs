@@ -43,6 +43,17 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<Stop> Stops { get; set; } = null!;
         public DbSet<Vehicle> Vehicles { get; set; } = null!;
         public DbSet<Driver> Drivers { get; set; } = null!;
+        public DbSet<LineStop> LineStops { get; set; } = null!;
+        public DbSet<RailwayLine> RailwayLines { get; set; } = null!;
+        public DbSet<RailwayStop> RailwayStops { get; set; } = null!;
+        public DbSet<RailwayLineStop> RailwayLineStops { get; set; } = null!;
+        public DbSet<Railway> Railways { get; set; } = null!;
+        public DbSet<RailwayDriver> RailwayDrivers { get; set; } = null!;
+        public DbSet<SubwayLine> SubwayLines { get; set; } = null!;
+        public DbSet<SubwayStop> SubwayStops { get; set; } = null!;
+        public DbSet<SubwayLineStop> SubwayLineStops { get; set; } = null!;
+        public DbSet<Subway> Subways { get; set; } = null!;
+        public DbSet<SubwayDriver> SubwayDrivers { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -20,6 +20,12 @@ namespace RouteMaster.API.Mapping
             CreateMap<PaymentMethod, PaymentMethodResource>();
             CreateMap<Wallet, WalletResource>();
             CreateMap<Ticket, TicketResource>();
+            CreateMap<Line, LineResource>();
+            CreateMap<SubwayLine, SubwayLineResource>();
+            CreateMap<BusLine, BusLineResource>();
+            CreateMap<RailwayLine, RailwayLineResource>();
+            CreateMap<Company, CompanyResource>();
+            CreateMap<VehicleType, VehicleTypeResource>();
         }
     }
 }

@@ -72,6 +72,12 @@ builder.Services.AddScoped<IDistrictRepo, DistrictRepo>();
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IPassengerRepo, PassengerRepo>();
 builder.Services.AddScoped<IWalletRepo, WalletRepo>();
+builder.Services.AddScoped<ITicketRepo, TicketRepo>();
+builder.Services.AddScoped<ICompanyRepo, CompanyRepo>();
+builder.Services.AddScoped<ILineRepo, LineRepo>();
+builder.Services.AddScoped<IBusLineRepo, BusLineRepo>();
+builder.Services.AddScoped<IRailwayLineRepo, RailwayLineRepo>();
+builder.Services.AddScoped<ISubwayLineRepo, SubwayLineRepo>();
 
 // Services
 builder.Services.AddScoped<ICountryService, CountryService>();
@@ -81,6 +87,12 @@ builder.Services.AddScoped<IDistrictService, DistrictService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPassengerService, PassengerService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<ILineService, LineService>();
+builder.Services.AddScoped<IBusLineService, BusLineService>();
+builder.Services.AddScoped<IRailwayLineService, RailwayLineService>();
+builder.Services.AddScoped<ISubwayLineService, SubwayLineService>();
 
 // Apply Endpoints Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
