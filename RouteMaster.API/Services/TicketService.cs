@@ -48,6 +48,9 @@ namespace RouteMaster.API.Services
         {
             try
             {
+                var tickets = await ticketRepo.ListAsync();
+                int numberCount = tickets.Where(x => x.BusName == ticket.BusName && x.CompanyName == ticket.CompanyName).Count();
+                ticket.Number = numberCount+=1;
                 await ticketRepo.AddAsync(ticket);
                 await unitOfWork.CompleteAsync();
 
