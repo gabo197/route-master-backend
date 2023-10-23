@@ -163,6 +163,7 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
             modelBuilder.Entity<Line>().ToTable("Line");
 
             modelBuilder.Entity<Line>().HasKey(v => v.LineId);
+            modelBuilder.Entity<Line>().Property(v => v.Logo).HasColumnType("varbinary(max)");
 
             modelBuilder.Entity<Line>()
                 .HasDiscriminator(l => l.VehicleTypeId)

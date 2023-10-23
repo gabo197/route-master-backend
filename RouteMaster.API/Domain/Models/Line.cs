@@ -10,6 +10,8 @@
         public string Color { get; set; } = null!;
         public int CompanyId { get; set; }
         public int VehicleTypeId { get; set; }
+        public string? OldCode { get; set; }
+        public byte[]? Logo { get; set; }
         public Company Company { get; set; } = null!;
         public VehicleType VehicleType { get; set; } = null!;
         public ICollection<Stop> Stops { get; set; } = null!;
