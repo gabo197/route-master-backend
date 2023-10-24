@@ -192,6 +192,10 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .IsUnique();
 
             modelBuilder.Entity<Line>()
+                .HasIndex(bl => bl.OldCode)
+                .IsUnique();
+
+            modelBuilder.Entity<Line>()
                 .HasAlternateKey(bl => bl.Code);
 
             //Bus Line
