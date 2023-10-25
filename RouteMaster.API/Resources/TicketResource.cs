@@ -6,6 +6,7 @@
         public int? TransactionId { get; set; }
         public int UserId { get; set; }
         public int? Number { get; set; }
+        public DateTime CreatedOn { get; set; }
         public string? CompanyName { get; set; }
         public string? BusName { get; set; }
     }

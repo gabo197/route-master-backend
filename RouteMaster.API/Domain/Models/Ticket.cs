@@ -8,6 +8,7 @@
         public int? Number { get; set; }
         public string? CompanyName { get; set; }
         public string? BusName { get; set; }
+        public DateTime CreatedOn { get; set; }
         public Transaction? Transaction { get; set; }
         public Passenger Passenger { get; set; } = null!;
     }

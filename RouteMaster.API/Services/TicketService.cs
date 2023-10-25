@@ -51,6 +51,10 @@ namespace RouteMaster.API.Services
                 var tickets = await ticketRepo.ListAsync();
                 int numberCount = tickets.Where(x => x.BusName == ticket.BusName && x.CompanyName == ticket.CompanyName).Count();
                 ticket.Number = numberCount+=1;
+
+                DateTimeOffset utcMinus5 = DateTimeOffset.UtcNow.ToOffset(new TimeSpan(-5, 0, 0));
+
+                ticket.CreatedOn = utcMinus5.DateTime;
                 await ticketRepo.AddAsync(ticket);
                 await unitOfWork.CompleteAsync();
 
