@@ -18,6 +18,8 @@ namespace RouteMaster.API.Mapping
             CreateMap<SaveBusLineResource, BusLine>();
             CreateMap<SaveRailwayLineResource, RailwayLine>();
             CreateMap<SaveSubwayLineResource, SubwayLine>();
+            CreateMap<SaveTripResource, Trip>();
+            CreateMap<SaveTripDetailResource, TripDetail>();
         }
     }
 }
