@@ -54,6 +54,9 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<SubwayLineStop> SubwayLineStops { get; set; } = null!;
         public DbSet<Subway> Subways { get; set; } = null!;
         public DbSet<SubwayDriver> SubwayDrivers { get; set; } = null!;
+        public DbSet<BusTripDetail> BusTripDetails { get; set; }
+        public DbSet<RailwayTripDetail> RailwayTripDetails { get; set; }
+        public DbSet<SubwayTripDetail> SubwayTripDetails { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -83,11 +86,6 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Vehicle>()
-                .HasOne(b => b.Line)
-                .WithMany(bl => bl.Vehicles)
-                .HasForeignKey(b => b.LineId);
-
-            modelBuilder.Entity<Vehicle>()
                 .Property(b => b.PlateNumber)
                 .HasMaxLength(6);
 
@@ -102,13 +100,28 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<Bus>().ToTable("Vehicle");
 
+            modelBuilder.Entity<Bus>()
+                .HasOne(b => b.BusLine)
+                .WithMany(bl => bl.Buses)
+                .HasForeignKey(b => b.LineId);
+
             //Railway
 
             modelBuilder.Entity<Railway>().ToTable("Vehicle");
 
+            modelBuilder.Entity<Railway>()
+                .HasOne(b => b.RailwayLine)
+                .WithMany(bl => bl.Railways)
+                .HasForeignKey(b => b.LineId);
+
             //Subway
 
             modelBuilder.Entity<Subway>().ToTable("Vehicle");
+
+            modelBuilder.Entity<Subway>()
+                .HasOne(b => b.SubwayLine)
+                .WithMany(bl => bl.Subways)
+                .HasForeignKey(b => b.LineId);
 
             //Driver
 
@@ -129,12 +142,6 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Driver>()
-                .HasOne(bd => bd.Vehicle)
-                .WithOne(b => b.Driver)
-                .HasForeignKey<Driver>(b => b.VehicleId)
-                .IsRequired(false);
-
-            modelBuilder.Entity<Driver>()
                 .HasOne(bd => bd.DocumentType)         
                 .WithMany()
                 .HasForeignKey(bd => bd.DocumentTypeId);
@@ -150,13 +157,31 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<BusDriver>().ToTable("Driver");
 
+            modelBuilder.Entity<BusDriver>()
+                .HasOne(bd => bd.Bus)
+                .WithOne(b => b.BusDriver)
+                .HasForeignKey<BusDriver>(b => b.VehicleId)
+                .IsRequired(false);
+
             //Railway Driver
 
             modelBuilder.Entity<RailwayDriver>().ToTable("Driver");
 
+            modelBuilder.Entity<RailwayDriver>()
+                .HasOne(bd => bd.Railway)
+                .WithOne(b => b.RailwayDriver)
+                .HasForeignKey<RailwayDriver>(b => b.VehicleId)
+                .IsRequired(false);
+
             //Subway Driver
 
             modelBuilder.Entity<SubwayDriver>().ToTable("Driver");
+
+            modelBuilder.Entity<SubwayDriver>()
+                .HasOne(bd => bd.Subway)
+                .WithOne(b => b.SubwayDriver)
+                .HasForeignKey<SubwayDriver>(b => b.VehicleId)
+                .IsRequired(false);
 
             //Line
 
@@ -170,11 +195,6 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .HasValue<BusLine>(1)
                 .HasValue<RailwayLine>(2)
                 .HasValue<SubwayLine>(3);
-
-            modelBuilder.Entity<Line>()
-                .HasMany(bl => bl.Stops)
-                .WithMany(bs => bs.Lines)
-                .UsingEntity<LineStop>();
 
             modelBuilder.Entity<Line>()
                 .HasOne(l => l.Company)
@@ -202,13 +222,28 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<BusLine>().ToTable("Line");
 
+            modelBuilder.Entity<BusLine>()
+                .HasMany(bl => bl.BusStops)
+                .WithMany(bs => bs.BusLines)
+                .UsingEntity<BusLineStop>();
+
             //Railway Line
 
             modelBuilder.Entity<RailwayLine>().ToTable("Line");
 
+            modelBuilder.Entity<RailwayLine>()
+                .HasMany(rl => rl.RailwayStops)
+                .WithMany(rs => rs.RailwayLines)
+                .UsingEntity<RailwayLineStop>();
+
             //Subway Line
 
             modelBuilder.Entity<SubwayLine>().ToTable("Line");
+
+            modelBuilder.Entity<SubwayLine>()
+                .HasMany(sl => sl.SubwayStops)
+                .WithMany(ss => ss.SubwayLines)
+                .UsingEntity<SubwayLineStop>();
 
             //Stop
 
@@ -339,30 +374,107 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<TripDetail>().ToTable("TripDetail");
 
-            modelBuilder.Entity<TripDetail>()
-                .HasOne(td => td.Trip)
-                .WithMany(t => t.TripDetails)
-                .HasForeignKey(td => td.TripId);
+            modelBuilder.Entity<TripDetail>().Property(td => td.Price)
+                .HasColumnType("decimal(5,2)");
 
             modelBuilder.Entity<TripDetail>()
-                .HasOne(td => td.Vehicle)
+                .HasDiscriminator(td => td.VehicleTypeId)
+                .HasValue<BusTripDetail>(1)
+                .HasValue<RailwayTripDetail>(2)
+                .HasValue<SubwayTripDetail>(3);
+
+            modelBuilder.Entity<TripDetail>()
+                .HasOne(td => td.VehicleType)
+                .WithMany()
+                .HasForeignKey(td => td.VehicleTypeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //Bus Trip Detail
+
+            modelBuilder.Entity<BusTripDetail>()
+                .HasOne(td => td.Trip)
+                .WithMany(t => t.BusTripDetails)
+                .HasForeignKey(td => td.TripId);
+
+            modelBuilder.Entity<BusTripDetail>()
+                .HasOne(td => td.Bus)
                 .WithMany()
                 .HasForeignKey(td => td.VehicleId)
                 .IsRequired(false);
 
-            modelBuilder.Entity<TripDetail>()
-                .HasOne(td => td.Line)
+            modelBuilder.Entity<BusTripDetail>()
+                .HasOne(td => td.BusLine)
                 .WithMany()
                 .HasForeignKey(td => td.LineId);
 
-            modelBuilder.Entity<TripDetail>()
-                .HasOne(t => t.OriginStop)
+            modelBuilder.Entity<BusTripDetail>()
+                .HasOne(t => t.OriginBusStop)
                 .WithMany()
                 .HasForeignKey(t => t.OriginStopId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<TripDetail>()
-                .HasOne(t => t.DestinationStop)
+            modelBuilder.Entity<BusTripDetail>()
+                .HasOne(t => t.DestinationBusStop)
+                .WithMany()
+                .HasForeignKey(t => t.DestinationStopId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //Railway Trip Detail
+
+            modelBuilder.Entity<RailwayTripDetail>()
+                .HasOne(td => td.Trip)
+                .WithMany(t => t.RailwayTripDetails)
+                .HasForeignKey(td => td.TripId);
+
+            modelBuilder.Entity<RailwayTripDetail>()
+                .HasOne(td => td.Railway)
+                .WithMany()
+                .HasForeignKey(td => td.VehicleId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<RailwayTripDetail>()
+                .HasOne(td => td.RailwayLine)
+                .WithMany()
+                .HasForeignKey(td => td.LineId);
+
+            modelBuilder.Entity<RailwayTripDetail>()
+                .HasOne(t => t.OriginRailwayStop)
+                .WithMany()
+                .HasForeignKey(t => t.OriginStopId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<RailwayTripDetail>()
+                .HasOne(t => t.DestinationRailwayStop)
+                .WithMany()
+                .HasForeignKey(t => t.DestinationStopId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            //Subway Trip Detail
+
+            modelBuilder.Entity<SubwayTripDetail>()
+                .HasOne(td => td.Trip)
+                .WithMany(t => t.SubwayTripDetails)
+                .HasForeignKey(td => td.TripId);
+
+            modelBuilder.Entity<SubwayTripDetail>()
+                .HasOne(td => td.Subway)
+                .WithMany()
+                .HasForeignKey(td => td.VehicleId)
+                .IsRequired(false);
+
+            modelBuilder.Entity<SubwayTripDetail>()
+                .HasOne(td => td.SubwayLine)
+                .WithMany()
+                .HasForeignKey(td => td.LineId);
+            
+            modelBuilder.Entity<SubwayTripDetail>()
+                .HasOne(t => t.OriginSubwayStop)
+                .WithMany()
+                .HasForeignKey(t => t.OriginStopId)
+                .OnDelete(DeleteBehavior.NoAction);
+            
+            modelBuilder.Entity<SubwayTripDetail>()
+                .HasOne(t => t.DestinationSubwayStop)
                 .WithMany()
                 .HasForeignKey(t => t.DestinationStopId)
                 .OnDelete(DeleteBehavior.NoAction);

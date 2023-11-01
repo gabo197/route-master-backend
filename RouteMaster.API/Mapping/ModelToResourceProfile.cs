@@ -26,12 +26,21 @@ namespace RouteMaster.API.Mapping
             CreateMap<RailwayLine, RailwayLineResource>();
             CreateMap<Company, CompanyResource>();
             CreateMap<VehicleType, VehicleTypeResource>();
-            CreateMap<Vehicle, VehicleResource>();
-            CreateMap<Driver, DriverResource>();
+            CreateMap<Bus, BusResource>();
+            CreateMap<Subway, SubwayResource>();
+            CreateMap<Railway, RailwayResource>();
+            CreateMap<BusDriver, BusDriverResource>();
+            CreateMap<SubwayDriver, SubwayDriverResource>();
+            CreateMap<RailwayDriver, RailwayDriverResource>();
             CreateMap<DocumentType, DocumentTypeResource>();
-            CreateMap<Stop, StopResource>();
+            CreateMap<BusStop, BusStopResource>();
+            CreateMap<SubwayStop, SubwayStopResource>();
+            CreateMap<RailwayStop, RailwayStopResource>();
             CreateMap<Trip, TripResource>();
-            CreateMap<TripDetail, TripDetailResource>();
+            CreateMap<BusTripDetail, BusTripDetailResource>();
+            CreateMap<SubwayTripDetail, SubwayTripDetailResource>();
+            CreateMap<RailwayTripDetail, RailwayTripDetailResource>();
+            CreateMap<BusStop, BusStopResource>();
         }
     }
 }

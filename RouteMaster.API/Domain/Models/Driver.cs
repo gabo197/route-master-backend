@@ -11,6 +11,5 @@
         public DocumentType DocumentType { get; set; } = null!;
         public VehicleType VehicleType { get; set; } = null!;
         public int? VehicleId { get; set; }
-        public Vehicle? Vehicle { get; set; }
     }
 }

@@ -12,50 +12,50 @@ namespace RouteMaster.API.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    public class TripDetailsController : ControllerBase
+    public class BusTripDetailsController : ControllerBase
     {
-        private readonly ITripDetailService tripDetailService;
+        private readonly IBusTripDetailService tripDetailService;
         private readonly IMapper mapper;
 
-        public TripDetailsController(ITripDetailService tripDetailService, IMapper mapper)
+        public BusTripDetailsController(IBusTripDetailService tripDetailService, IMapper mapper)
         {
             this.tripDetailService = tripDetailService;
             this.mapper = mapper;
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(TripDetailResource), 200)]
+        [ProducesResponseType(typeof(BusTripDetailResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]
-        public async Task<IActionResult> PostAsync([FromBody] SaveTripDetailResource resource)
+        public async Task<IActionResult> PostAsync([FromBody] SaveBusTripDetailResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var tripDetail = mapper.Map<SaveTripDetailResource, TripDetail>(resource);
+            var tripDetail = mapper.Map<SaveBusTripDetailResource, BusTripDetail>(resource);
             var result = await tripDetailService.SaveAsync(tripDetail);
 
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var tripDetailResource = mapper.Map<TripDetail, TripDetailResource>(result.Resource);
+            var tripDetailResource = mapper.Map<BusTripDetail, BusTripDetailResource>(result.Resource);
             return Ok(tripDetailResource);
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(TripDetailResource), 200)]
+        [ProducesResponseType(typeof(BusTripDetailResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]
-        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveTripDetailResource resource)
+        public async Task<IActionResult> PutAsync(int id, [FromBody] SaveBusTripDetailResource resource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var tripDetail = mapper.Map<SaveTripDetailResource, TripDetail>(resource);
+            var tripDetail = mapper.Map<SaveBusTripDetailResource, BusTripDetail>(resource);
             var result = await tripDetailService.UpdateAsync(id, tripDetail);
 
             if (!result.Success)
                 return BadRequest(result.Message);
 
-            var tripDetailResource = mapper.Map<TripDetail, TripDetailResource>(result.Resource);
+            var tripDetailResource = mapper.Map<BusTripDetail, BusTripDetailResource>(result.Resource);
             return Ok(tripDetailResource);
         }
     }

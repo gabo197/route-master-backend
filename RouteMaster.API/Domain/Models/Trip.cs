@@ -8,6 +8,8 @@
         public DateTime? EndDate { get; set; }
         public decimal? TotalPrice { get; set; }
         public Passenger Passenger { get; set; } = null!;
-        public ICollection<TripDetail> TripDetails { get; set; } = new List<TripDetail>();
+        public ICollection<BusTripDetail> BusTripDetails { get; set; } = new List<BusTripDetail>();
+        public ICollection<SubwayTripDetail> SubwayTripDetails { get; set; } = new List<SubwayTripDetail>();
+        public ICollection<RailwayTripDetail> RailwayTripDetails { get; set; } = new List<RailwayTripDetail>();
     }
 }

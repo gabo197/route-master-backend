@@ -2,5 +2,6 @@
 {
     public class SubwayDriver : Driver
     {
+        public Subway? Subway { get; set; }
     }
 }

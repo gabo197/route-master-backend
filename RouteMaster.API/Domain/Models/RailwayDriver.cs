@@ -2,5 +2,6 @@
 {
     public class RailwayDriver : Driver
     {
+        public Railway? Railway { get; set; }
     }
 }

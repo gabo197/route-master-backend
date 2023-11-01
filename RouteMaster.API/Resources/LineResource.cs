@@ -1,6 +1,6 @@
 ﻿namespace RouteMaster.API.Resources
 {
-    public abstract class LineResource
+    public class LineResource
     {
         public int LineId { get; set; }
         public string Code { get; set; } = null!;

@@ -25,14 +25,14 @@ namespace RouteMaster.API.Persistence.Repos
         {
             return await _context.Trips
                 .Where(t => t.UserId == userId)
-                .Include(t => t.TripDetails)
-                //    .ThenInclude(td => td.Line)
-                //.Include(t => t.TripDetails)
-                //    .ThenInclude(td => td.Vehicle)
-                //.Include(t => t.TripDetails)
-                //    .ThenInclude(td => td.OriginStop)
-                //.Include(t => t.TripDetails)
-                //    .ThenInclude(td => td.DestinationStop)
+                .Include(t => t.BusTripDetails)
+                    .ThenInclude(td => td.BusLine)
+                .Include(t => t.BusTripDetails)
+                    .ThenInclude(td => td.Bus)
+                .Include(t => t.BusTripDetails)
+                    .ThenInclude(td => td.OriginBusStop)
+                .Include(t => t.BusTripDetails)
+                    .ThenInclude(td => td.DestinationBusStop)
                 .ToListAsync();
         }
 

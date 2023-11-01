@@ -8,7 +8,5 @@
         public decimal Latitude { get; set; }
         public decimal Longitude { get; set; }
         public VehicleType VehicleType { get; set; } = null!;
-        public ICollection<Line> Lines { get; set; } = null!;
-        public ICollection<LineStop> LineStops { get; set; } = null!;
     }
 }

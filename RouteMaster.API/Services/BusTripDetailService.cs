@@ -6,38 +6,38 @@ using RouteMaster.API.Persistence.Repos;
 
 namespace RouteMaster.API.Services
 {
-    public class TripDetailService : ITripDetailService
+    public class BusTripDetailService : IBusTripDetailService
     {
-        private readonly ITripDetailRepo tripDetailRepo;
+        private readonly IBusTripDetailRepo busTripDetailRepo;
         private readonly IUnitOfWork unitOfWork;
 
-        public TripDetailService(ITripDetailRepo tripDetailRepo, IUnitOfWork unitOfWork)
+        public BusTripDetailService(IBusTripDetailRepo busTripDetailRepo, IUnitOfWork unitOfWork)
         {
-            this.tripDetailRepo = tripDetailRepo;
+            this.busTripDetailRepo = busTripDetailRepo;
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<TripDetailResponse> SaveAsync(TripDetail tripDetail)
+        public async Task<BusTripDetailResponse> SaveAsync(BusTripDetail tripDetail)
         {
             try
             {
-                await tripDetailRepo.AddAsync(tripDetail);
+                await busTripDetailRepo.AddAsync(tripDetail);
                 await unitOfWork.CompleteAsync();
 
-                return new TripDetailResponse(tripDetail);
+                return new BusTripDetailResponse(tripDetail);
             }
             catch (Exception ex)
             {
-                return new TripDetailResponse($"An error ocurred while saving the tripDetail: {ex.Message}");
+                return new BusTripDetailResponse($"An error ocurred while saving the tripDetail: {ex.Message}");
             }
         }
 
-        public async Task<TripDetailResponse> UpdateAsync(int tripDetailId, TripDetail tripDetail)
+        public async Task<BusTripDetailResponse> UpdateAsync(int tripDetailId, BusTripDetail tripDetail)
         {
-            var existingTripDetail = await tripDetailRepo.FindById(tripDetailId);
+            var existingTripDetail = await busTripDetailRepo.FindById(tripDetailId);
 
             if (existingTripDetail == null)
-                return new TripDetailResponse("TripDetail not found");
+                return new BusTripDetailResponse("TripDetail not found");
 
             existingTripDetail.TripId = tripDetail.TripId;
             existingTripDetail.VehicleId = tripDetail.VehicleId;
@@ -48,14 +48,14 @@ namespace RouteMaster.API.Services
 
             try
             {
-                tripDetailRepo.Update(existingTripDetail);
+                busTripDetailRepo.Update(existingTripDetail);
                 await unitOfWork.CompleteAsync();
 
-                return new TripDetailResponse(existingTripDetail);
+                return new BusTripDetailResponse(existingTripDetail);
             }
             catch (Exception ex)
             {
-                return new TripDetailResponse($"An error ocurred while updating the tripDetail: {ex.Message}");
+                return new BusTripDetailResponse($"An error ocurred while updating the tripDetail: {ex.Message}");
             }
         }
     }
