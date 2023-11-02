@@ -80,6 +80,12 @@ builder.Services.AddScoped<IRailwayLineRepo, RailwayLineRepo>();
 builder.Services.AddScoped<ISubwayLineRepo, SubwayLineRepo>();
 builder.Services.AddScoped<ITripRepo, TripRepo>();
 builder.Services.AddScoped<IBusTripDetailRepo, BusTripDetailRepo>();
+builder.Services.AddScoped<IBusStopRepo, BusStopRepo>();
+builder.Services.AddScoped<IRailwayStopRepo, RailwayStopRepo>();
+builder.Services.AddScoped<ISubwayStopRepo, SubwayStopRepo>();
+builder.Services.AddScoped<IBusLineStopRepo, BusLineStopRepo>();
+builder.Services.AddScoped<IRailwayLineStopRepo, RailwayLineStopRepo>();
+builder.Services.AddScoped<ISubwayLineStopRepo, SubwayLineStopRepo>();
 
 // Services
 builder.Services.AddScoped<ICountryService, CountryService>();
@@ -97,6 +103,12 @@ builder.Services.AddScoped<IRailwayLineService, RailwayLineService>();
 builder.Services.AddScoped<ISubwayLineService, SubwayLineService>();
 builder.Services.AddScoped<ITripService, TripService>();
 builder.Services.AddScoped<IBusTripDetailService, BusTripDetailService>();
+builder.Services.AddScoped<IBusStopService, BusStopService>();
+builder.Services.AddScoped<IRailwayStopService, RailwayStopService>();
+builder.Services.AddScoped<ISubwayStopService, SubwayStopService>();
+builder.Services.AddScoped<IBusLineStopService, BusLineStopService>();
+builder.Services.AddScoped<IRailwayLineStopService, RailwayLineStopService>();
+builder.Services.AddScoped<ISubwayLineStopService, SubwayLineStopService>();
 
 // Apply Endpoints Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);

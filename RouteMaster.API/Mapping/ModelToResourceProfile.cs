@@ -40,7 +40,9 @@ namespace RouteMaster.API.Mapping
             CreateMap<BusTripDetail, BusTripDetailResource>();
             CreateMap<SubwayTripDetail, SubwayTripDetailResource>();
             CreateMap<RailwayTripDetail, RailwayTripDetailResource>();
-            CreateMap<BusStop, BusStopResource>();
+            CreateMap<BusLineStop, BusLineStopResource>();
+            CreateMap<SubwayLineStop, SubwayLineStopResource>();
+            CreateMap<RailwayLineStop, RailwayLineStopResource>();
         }
     }
 }
