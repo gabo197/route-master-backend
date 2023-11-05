@@ -77,6 +77,8 @@ namespace RouteMaster.API.Services
             existingBusLine.LastStop = busLine.LastStop;
             existingBusLine.Alias = busLine.Alias;
             existingBusLine.Color = busLine.Color;
+            existingBusLine.OldCode = busLine.OldCode;
+            existingBusLine.Logo = busLine.Logo;
 
             try
             {
