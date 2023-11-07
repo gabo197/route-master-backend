@@ -6,6 +6,7 @@ using RouteMaster.API.Domain.Models;
 using RouteMaster.API.Domain.Services;
 using RouteMaster.API.Extensions;
 using RouteMaster.API.Resources;
+using RouteMaster.API.Services;
 
 namespace RouteMaster.API.Controllers
 {
@@ -30,6 +31,17 @@ namespace RouteMaster.API.Controllers
             var busStops = await busStopService.ListAsync();
             var resources = mapper
                 .Map<IEnumerable<BusStop>, IEnumerable<BusStopResource>>(busStops);
+            return resources;
+        }
+
+        [HttpGet("{id}/BusLine")]
+        [ProducesResponseType(typeof(BusLineResource), 200)]
+        [ProducesResponseType(typeof(BadRequestResult), 404)]
+        public async Task<IEnumerable<BusStopResource>> GetByBusLineIdAsync(int id)
+        {
+            var busStops = await busStopService.GetByBusLineIdAsync(id);
+            var resources = mapper
+                 .Map<IEnumerable<BusStop>, IEnumerable<BusStopResource>>(busStops);
             return resources;
         }
     }

@@ -17,5 +17,10 @@ namespace RouteMaster.API.Services
         {
             return await _busStopRepo.ListAsync();
         }
+
+        async Task<IEnumerable<BusStop>> IBusStopService.GetByBusLineIdAsync(int id)
+        {
+            return await _busStopRepo.GetByBusLineIdAsync(id);
+        }
     }
 }
