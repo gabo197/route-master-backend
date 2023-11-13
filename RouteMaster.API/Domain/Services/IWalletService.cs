@@ -9,6 +9,7 @@ namespace RouteMaster.API.Domain.Services
         Task<WalletResponse> GetByIdAsync(int id);
         Task<WalletResponse> SaveAsync(Wallet wallet);
         Task<WalletResponse> UpdateAsync(int id, Wallet wallet);
+        Task<WalletResponse> UpdateSimpleAsync(int id, Wallet wallet);
         Task<WalletResponse> DeleteAsync(int id);
     }
 }

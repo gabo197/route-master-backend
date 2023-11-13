@@ -3,6 +3,7 @@ using RouteMaster.API.Domain.Persistence.Repos;
 using RouteMaster.API.Domain.Services;
 using RouteMaster.API.Domain.Services.Communications;
 using RouteMaster.API.Settings;
+using RouteMaster.API.Util;
 
 namespace RouteMaster.API.Services
 {
@@ -55,6 +56,9 @@ namespace RouteMaster.API.Services
         {
             try
             {
+                // Encrypt the balance before saving
+                wallet.Balance = WalletBalanceEncryptor.Encrypt(wallet.Balance);
+
                 await walletRepo.AddAsync(wallet);
                 await unitOfWork.CompleteAsync();
 
@@ -62,7 +66,7 @@ namespace RouteMaster.API.Services
             }
             catch (Exception ex)
             {
-                return new WalletResponse($"An error ocurred while saving the wallet: {ex.Message}");
+                return new WalletResponse($"An error occurred while saving the wallet: {ex.Message}");
             }
         }
 
@@ -73,11 +77,11 @@ namespace RouteMaster.API.Services
             if (existingWallet == null)
                 return new WalletResponse("Wallet not found");
 
-            existingWallet.Balance = wallet.Balance;
-            existingWallet.LastUpdate = wallet.LastUpdate;
-
             try
             {
+                // Encrypt the balance before updating
+                existingWallet.Balance = WalletBalanceEncryptor.Encrypt(wallet.Balance);
+                existingWallet.LastUpdate = wallet.LastUpdate;
                 walletRepo.Update(existingWallet);
                 await unitOfWork.CompleteAsync();
 
@@ -85,7 +89,28 @@ namespace RouteMaster.API.Services
             }
             catch (Exception ex)
             {
-                return new WalletResponse($"An error ocurred while updating the wallet: {ex.Message}");
+                return new WalletResponse($"An error occurred while updating the wallet: {ex.Message}");
+            }
+        }
+
+        public async Task<WalletResponse> UpdateSimpleAsync(int id, Wallet wallet)
+        {
+            var existingWallet = await walletRepo.FindByIdSimple(id);
+
+            if (existingWallet == null)
+                return new WalletResponse("Wallet not found");
+
+            try
+            {
+                existingWallet.Balance = WalletBalanceEncryptor.Encrypt(wallet.Balance);
+                walletRepo.Update(existingWallet);
+                await unitOfWork.CompleteAsync();
+
+                return new WalletResponse(existingWallet);
+            }
+            catch (Exception ex)
+            {
+                return new WalletResponse($"An error occurred while updating the wallet: {ex.Message}");
             }
         }
     }

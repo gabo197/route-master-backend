@@ -58,5 +58,23 @@ namespace RouteMaster.API.Controllers
             var walletResource = mapper.Map<Wallet, WalletResource>(result.Resource);
             return Ok(walletResource);
         }
+
+        [HttpPut("FixWallets/{id}")]
+        [ProducesResponseType(typeof(WalletResource), 200)]
+        [ProducesResponseType(typeof(BadRequestResult), 404)]
+        public async Task<IActionResult> PutSimpleAsync(int id, [FromBody] SaveWalletResource resource)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetErrorMessages());
+
+            var wallet = mapper.Map<SaveWalletResource, Wallet>(resource);
+            var result = await walletService.UpdateSimpleAsync(id, wallet);
+
+            if (!result.Success)
+                return BadRequest(result.Message);
+
+            var walletResource = mapper.Map<Wallet, WalletResource>(result.Resource);
+            return Ok(walletResource);
+        }
     }
 }

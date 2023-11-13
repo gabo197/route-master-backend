@@ -7,6 +7,7 @@ namespace RouteMaster.API.Domain.Persistence.Repos
         Task<IEnumerable<Wallet>> ListAsync();
         Task AddAsync(Wallet wallet);
         Task<Wallet?> FindById(int id);
+        Task<Wallet?> FindByIdSimple(int id);
         void Update(Wallet wallet);
         void Remove(Wallet wallet);
     }

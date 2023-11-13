@@ -2,6 +2,7 @@
 using RouteMaster.API.Domain.Models;
 using RouteMaster.API.Domain.Persistence.Contexts;
 using RouteMaster.API.Domain.Persistence.Repos;
+using RouteMaster.API.Util;
 
 namespace RouteMaster.API.Persistence.Repos
 {
@@ -18,24 +19,32 @@ namespace RouteMaster.API.Persistence.Repos
 
         public async Task<Passenger?> FindById(int id)
         {
-            return await _context.Passengers
+            var passenger = await _context.Passengers
                 .Include(p => p.PaymentMethod)
                 .Include(p => p.Address)
                 .Include(p => p.AuditLog)
                 .Include(p => p.User)
                 .Include(p => p.Wallet)
                 .FirstOrDefaultAsync(p => p.UserId == id);
+            passenger!.Wallet.Balance = WalletBalanceEncryptor.Decrypt(passenger.Wallet.Balance);
+            return passenger;
         }
 
         public async Task<IEnumerable<Passenger>> ListAsync()
         {
-            return await _context.Passengers
+            var passengers = await _context.Passengers
                 .Include(p => p.PaymentMethod)
                 .Include(p => p.Address)
                 .Include(p => p.AuditLog)
                 .Include(p => p.User)
                 .Include(p => p.Wallet)
                 .ToListAsync();
+            foreach (var passenger in passengers)
+            {
+                if (passenger.Wallet != null)
+                    passenger.Wallet.Balance = WalletBalanceEncryptor.Decrypt(passenger.Wallet.Balance);
+            }
+            return passengers;
         }
 
         public void Remove(Passenger passenger)

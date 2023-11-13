@@ -2,6 +2,7 @@
 using RouteMaster.API.Domain.Models;
 using RouteMaster.API.Domain.Persistence.Contexts;
 using RouteMaster.API.Domain.Persistence.Repos;
+using RouteMaster.API.Util;
 
 namespace RouteMaster.API.Persistence.Repos
 {
@@ -18,8 +19,19 @@ namespace RouteMaster.API.Persistence.Repos
 
         public async Task<Wallet?> FindById(int id)
         {
+            var wallet = await _context.Wallets.FindAsync(id);
+            if (wallet != null)
+            {
+                wallet.Balance = WalletBalanceEncryptor.Decrypt(wallet.Balance);
+            }
+            return wallet;
+        }
+
+        public async Task<Wallet?> FindByIdSimple(int id)
+        {
             return await _context.Wallets.FindAsync(id);
         }
+
 
         public async Task<IEnumerable<Wallet>> ListAsync()
         {

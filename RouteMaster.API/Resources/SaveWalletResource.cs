@@ -7,7 +7,7 @@ public class SaveWalletResource
     [Required]
     public int UserId { get; set; }
     [Required]
-    public decimal Balance { get; set; }
+    public string Balance { get; set; } = null!;
     [Required]
     public DateTime LastUpdate { get; set; }
 }

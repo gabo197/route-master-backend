@@ -501,9 +501,6 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
 
             modelBuilder.Entity<Wallet>().ToTable("Wallet");
 
-            modelBuilder.Entity<Wallet>().Property(w => w.Balance).HasColumnType("decimal(5,2)");
-            modelBuilder.Entity<Wallet>().ToTable(t=>t.HasCheckConstraint("CK_Wallet_Balance", "Balance <= 500.00"));
-
             modelBuilder.Entity<Wallet>()
                 .HasOne(w => w.Passenger)
                 .WithOne(u => u.Wallet)
