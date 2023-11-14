@@ -85,7 +85,9 @@ namespace RouteMaster.API.Services
                 walletRepo.Update(existingWallet);
                 await unitOfWork.CompleteAsync();
 
-                return new WalletResponse(existingWallet);
+                var returnWallet = existingWallet;
+                returnWallet.Balance = WalletBalanceEncryptor.Decrypt(returnWallet.Balance);
+                return new WalletResponse(returnWallet);
             }
             catch (Exception ex)
             {
