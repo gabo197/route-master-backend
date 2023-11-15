@@ -33,6 +33,16 @@ namespace RouteMaster.API.Controllers
             return resources;
         }
 
+        [HttpGet("stop/{stopId}")]
+        [ProducesResponseType(typeof(IEnumerable<BusLineResource>), 200)]
+        public async Task<IEnumerable<BusLineResource>> GetByStopIdAsync(int stopId)
+        {
+            var busLines = await busLineService.ListByStopIdAsync(stopId);
+            var resources = mapper
+                .Map<IEnumerable<BusLine>, IEnumerable<BusLineResource>>(busLines);
+            return resources;
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(BusLineResource), 200)]
         [ProducesResponseType(typeof(BadRequestResult), 404)]

@@ -32,6 +32,21 @@ namespace RouteMaster.API.Persistence.Repos
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<BusLine>> ListByStopIdAsync(int stopId)
+        {
+            var linesForStop = await _context.BusLines
+            .FromSqlInterpolated($@"
+                SELECT l.*
+                FROM Line l
+                JOIN LineStop ls ON l.LineId = ls.LineId and ls.VehicleTypeId = 1
+                JOIN Stop s ON ls.StopId = s.StopId and s.VehicleTypeId = 1
+                WHERE l.VehicleTypeId = 1 and s.StopId = {stopId}
+            ")
+            .ToListAsync();
+
+            return linesForStop;
+        }
+
         public void Remove(BusLine busLine)
         {
             _context.BusLines.Remove(busLine);

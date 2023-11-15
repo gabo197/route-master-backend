@@ -50,6 +50,11 @@ namespace RouteMaster.API.Services
             return await busLineRepo.ListAsync();
         }
 
+        public async Task<IEnumerable<BusLine>> ListByStopIdAsync(int stopId)
+        {
+            return await busLineRepo.ListByStopIdAsync(stopId);
+        }
+
         public async Task<BusLineResponse> SaveAsync(BusLine busLine)
         {
             try
