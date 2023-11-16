@@ -16,12 +16,23 @@ namespace RouteMaster.API.Persistence.Repos
             await _context.BusLines.AddAsync(busLine);
         }
 
+        public async Task AddFavoriteBusLineForUser(PassengerFavoriteBusLine passengerFavoriteBusLine)
+        {
+            await _context.PassengerFavoriteBusLines.AddAsync(passengerFavoriteBusLine);
+        }
+
         public async Task<BusLine?> FindByIdAsync(int id)
         {
             return await _context.BusLines
                 .Include(bl => bl.Company)
                 .Include(bl => bl.VehicleType)
                 .FirstOrDefaultAsync(bl => bl.LineId == id);
+        }
+
+        public async Task<PassengerFavoriteBusLine?> FindFavoriteBusLineForUser(int userId, int busLineId)
+        {
+            return await _context.PassengerFavoriteBusLines
+            .FirstOrDefaultAsync(f => f.PassengerId == userId && f.BusLineId == busLineId);
         }
 
         public async Task<IEnumerable<BusLine>> ListAsync()
@@ -47,9 +58,21 @@ namespace RouteMaster.API.Persistence.Repos
             return linesForStop;
         }
 
+        public async Task<IEnumerable<BusLine>> ListFavoriteBusLinesByUserId(int userId)
+        {
+            return await _context.BusLines
+                .Where(l => l.PassengerFavoriteBusLines.Any(f => f.PassengerId == userId))
+                .ToListAsync();
+        }
+
         public void Remove(BusLine busLine)
         {
             _context.BusLines.Remove(busLine);
+        }
+
+        public void RemoveFavoriteBusLineForUser(PassengerFavoriteBusLine passengerFavoriteBusLine)
+        {
+            _context.PassengerFavoriteBusLines.Remove(passengerFavoriteBusLine);
         }
 
         public void Update(BusLine busLine)

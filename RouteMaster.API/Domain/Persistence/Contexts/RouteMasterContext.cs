@@ -57,6 +57,7 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<BusTripDetail> BusTripDetails { get; set; }
         public DbSet<RailwayTripDetail> RailwayTripDetails { get; set; }
         public DbSet<SubwayTripDetail> SubwayTripDetails { get; set; }
+        public DbSet<PassengerFavoriteBusLine> PassengerFavoriteBusLines { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -66,6 +67,10 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Passenger Favorite Bus Line
+
+            modelBuilder.Entity<PassengerFavoriteBusLine>().ToTable("PassengerFavoriteBusLine");
 
             //Vehicle
 
@@ -671,6 +676,11 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
                 .HasOne(p => p.PaymentMethod)
                 .WithMany(p => p.Passengers)
                 .HasForeignKey(p => p.PaymentMethodId);
+
+            modelBuilder.Entity<Passenger>()
+                .HasMany(p => p.BusLines)
+                .WithMany(bl => bl.Passengers)
+                .UsingEntity<PassengerFavoriteBusLine>();
 
             //Administrator
 

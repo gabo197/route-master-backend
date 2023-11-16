@@ -36,6 +36,26 @@ namespace RouteMaster.API.Services
             }
         }
 
+        public async Task<PassengerFavoriteBusLineResponse> DeleteFavoriteBusLineForUserAsync(int userId, int busLineId)
+        {
+            var existingFavoriteBusLine = await busLineRepo.FindFavoriteBusLineForUser(userId, busLineId);
+
+            if (existingFavoriteBusLine == null)
+                return new PassengerFavoriteBusLineResponse("Favorite BusLine not found");
+            
+            try
+            {
+                busLineRepo.RemoveFavoriteBusLineForUser(existingFavoriteBusLine);
+                await unitOfWork.CompleteAsync();
+
+                return new PassengerFavoriteBusLineResponse(existingFavoriteBusLine);
+            }
+            catch (Exception ex)
+            {
+                return new PassengerFavoriteBusLineResponse($"An error ocurred while deleting the favorite busLine: {ex.Message}");
+            }
+        }
+
         public async Task<BusLineResponse> GetByIdAsync(int id)
         {
             var existingBusLine = await busLineRepo.FindByIdAsync(id);
@@ -55,6 +75,11 @@ namespace RouteMaster.API.Services
             return await busLineRepo.ListByStopIdAsync(stopId);
         }
 
+        public async Task<IEnumerable<BusLine>> ListFavoriteBusLinesByUserId(int userId)
+        {
+            return await busLineRepo.ListFavoriteBusLinesByUserId(userId);
+        }
+
         public async Task<BusLineResponse> SaveAsync(BusLine busLine)
         {
             try
@@ -67,6 +92,21 @@ namespace RouteMaster.API.Services
             catch (Exception ex)
             {
                 return new BusLineResponse($"An error ocurred while saving the busLine: {ex.Message}");
+            }
+        }
+
+        public async Task<PassengerFavoriteBusLineResponse> SaveFavoriteBusLineForUserAsync(PassengerFavoriteBusLine passengerFavoriteBusLine)
+        {
+            try
+            {
+                await busLineRepo.AddFavoriteBusLineForUser(passengerFavoriteBusLine);
+                await unitOfWork.CompleteAsync();
+
+                return new PassengerFavoriteBusLineResponse(passengerFavoriteBusLine);
+            }
+            catch (Exception ex)
+            {
+                return new PassengerFavoriteBusLineResponse($"An error ocurred while saving the favorite busLine: {ex.Message}");
             }
         }
 
