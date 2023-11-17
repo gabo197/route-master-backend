@@ -58,6 +58,7 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         public DbSet<RailwayTripDetail> RailwayTripDetails { get; set; }
         public DbSet<SubwayTripDetail> SubwayTripDetails { get; set; }
         public DbSet<PassengerFavoriteBusLine> PassengerFavoriteBusLines { get; set; } = null!;
+        public DbSet<Rating> Ratings { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -67,6 +68,23 @@ namespace RouteMaster.API.Domain.Persistence.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //Rating
+
+            modelBuilder.Entity<Rating>().ToTable("Rating");
+
+            modelBuilder.Entity<Rating>().HasKey(r => r.RatingId);
+
+            modelBuilder.Entity<Rating>()
+                .HasOne(r => r.Passenger)
+                .WithMany(p => p.Ratings)
+                .HasForeignKey(r => r.PassengerId);
+            
+            modelBuilder.Entity<Rating>()
+                .HasOne(r => r.BusTripDetail)
+                .WithOne(btd => btd.Rating)
+                .HasForeignKey<Rating>(r => r.TripDetailId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             //Passenger Favorite Bus Line
 

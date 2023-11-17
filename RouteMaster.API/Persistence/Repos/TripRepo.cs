@@ -33,6 +33,8 @@ namespace RouteMaster.API.Persistence.Repos
                     .ThenInclude(td => td.OriginBusStop)
                 .Include(t => t.BusTripDetails)
                     .ThenInclude(td => td.DestinationBusStop)
+                .Include(t => t.BusTripDetails)
+                    .ThenInclude(td => td.Rating)
                 .ToListAsync();
         }
 

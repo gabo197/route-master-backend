@@ -21,6 +21,7 @@ namespace RouteMaster.API.Mapping
             CreateMap<SaveTripResource, Trip>();
             CreateMap<SaveTripDetailResource, BusTripDetail>();
             CreateMap<SavePassengerFavoriteBusLineResource, PassengerFavoriteBusLine>();
+            CreateMap<SaveRatingResource, Rating>();
         }
     }
 }
