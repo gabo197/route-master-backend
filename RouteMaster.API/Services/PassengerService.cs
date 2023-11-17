@@ -2,6 +2,7 @@
 using RouteMaster.API.Domain.Persistence.Repos;
 using RouteMaster.API.Domain.Services;
 using RouteMaster.API.Domain.Services.Communications;
+using RouteMaster.API.Util;
 
 namespace RouteMaster.API.Services
 {
@@ -78,6 +79,7 @@ namespace RouteMaster.API.Services
             existingPassenger.LastName2 = passenger.LastName2;
             existingPassenger.PhoneNumber = passenger.PhoneNumber;
             existingPassenger.PaymentMethodId = passenger.PaymentMethodId;
+            existingPassenger.Wallet.Balance = WalletBalanceEncryptor.Encrypt(existingPassenger.Wallet.Balance);
 
             try
             {
