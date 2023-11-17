@@ -61,6 +61,8 @@ namespace RouteMaster.API.Persistence.Repos
         public async Task<IEnumerable<BusLine>> ListFavoriteBusLinesByUserId(int userId)
         {
             return await _context.BusLines
+                .Include(bl => bl.Company)
+                .Include(bl => bl.VehicleType)
                 .Where(l => l.PassengerFavoriteBusLines.Any(f => f.PassengerId == userId))
                 .ToListAsync();
         }
