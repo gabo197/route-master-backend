@@ -45,6 +45,7 @@ namespace RouteMaster.API.Mapping
             CreateMap<RailwayLineStop, RailwayLineStopResource>();
             CreateMap<PassengerFavoriteBusLine, PassengerFavoriteBusLineResource>();
             CreateMap<Rating, RatingResource>();
+            CreateMap<Transaction, TransactionResource>();
         }
     }
 }

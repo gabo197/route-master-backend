@@ -87,6 +87,10 @@ builder.Services.AddScoped<IBusLineStopRepo, BusLineStopRepo>();
 builder.Services.AddScoped<IRailwayLineStopRepo, RailwayLineStopRepo>();
 builder.Services.AddScoped<ISubwayLineStopRepo, SubwayLineStopRepo>();
 builder.Services.AddScoped<IRatingRepo, RatingRepo>();
+builder.Services.AddScoped<ITransactionRepo, TransactionRepo>();
+builder.Services.AddScoped<IPaymentTransactionRepo, PaymentTransactionRepo>();
+builder.Services.AddScoped<IRechargeTransactionRepo, RechargeTransactionRepo>();
+builder.Services.AddScoped<ITransferTransactionRepo, TransferTransactionRepo>();
 
 // Services
 builder.Services.AddScoped<ICountryService, CountryService>();
@@ -111,6 +115,10 @@ builder.Services.AddScoped<IBusLineStopService, BusLineStopService>();
 builder.Services.AddScoped<IRailwayLineStopService, RailwayLineStopService>();
 builder.Services.AddScoped<ISubwayLineStopService, SubwayLineStopService>();
 builder.Services.AddScoped<IRatingService, RatingService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
+builder.Services.AddScoped<IPaymentTransactionService, PaymentTransactionService>();
+builder.Services.AddScoped<IRechargeTransactionService, RechargeTransactionService>();
+builder.Services.AddScoped<ITransferTransactionService, TransferTransactionService>();
 
 // Apply Endpoints Naming Convention
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
