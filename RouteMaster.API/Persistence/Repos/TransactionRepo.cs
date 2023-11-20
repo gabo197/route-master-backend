@@ -14,7 +14,7 @@ namespace RouteMaster.API.Persistence.Repos
         public async Task<IEnumerable<Transaction>> ListByWalletIdAsync(int walletId)
         {
             return await _context.Transactions
-                .Where(t => t.WalletId == walletId)
+                .Where(t => t.WalletId == walletId || t.RecipientWalletId == walletId)
                 .ToListAsync();
         }
     }
